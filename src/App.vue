@@ -2,13 +2,18 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/registration">Registration</router-link>
+      <router-link to="/registrations">Registrations</router-link> |
+      <router-link to="/admin">Admin</router-link>
     </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="less">
+@import './styles/globals';
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
