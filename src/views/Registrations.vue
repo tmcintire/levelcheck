@@ -3,12 +3,14 @@
     <h1>Registrations</h1>
     <div class="flex-row flex-space-around">
       <div class="flex-col">
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-        <b-form-input class="form-input" v-model="firstName" placeholder="First Name"></b-form-input>
-        <b-form-input class="form-input" v-model="lastName" placeholder="Last Name"></b-form-input>
-        <b-form-input class="form-input" v-model="originalLevel" placeholder="Original Level"></b-form-input>
-        <b-form-input class="form-input" v-model="finalLevel" placeholder="Final Level"></b-form-input>
-        <b-button variant="primary" @click="submit">Submit</b-button>
+        <b-form @submit="onSubmit" @reset="onReset">
+          <b-form-input class="form-input" v-model="firstName" placeholder="First Name"></b-form-input>
+          <b-form-input class="form-input" v-model="lastName" placeholder="Last Name"></b-form-input>
+          <b-form-input class="form-input" v-model="originalLevel" placeholder="Original Level"></b-form-input>
+          <b-form-input class="form-input" v-model="finalLevel" placeholder="Final Level"></b-form-input>
+          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
 
         <div v-if="showSuccess">
           <h4>Success!</h4>
@@ -31,31 +33,29 @@ import { IRegistration } from '../data/interfaces';
 import { mapState } from 'vuex';
 
 @Component({
-  computed: mapState(['registrations'])
+  computed: mapState(['registrations']),
 })
 export default class Registrations extends Vue {
 
-  firstName: string = '';
-  lastName: string = '';
-  originalLevel: string = '';
-  finalLevel: string = '';
-  showSuccess: boolean = false;
+  public firstName: string = '';
+  public lastName: string = '';
+  public originalLevel: string = '';
+  public finalLevel: string = '';
+  public showSuccess: boolean = false;
 
-  submit () {
+  public onSubmit(e: Event) {
+    e.preventDefault();
     const reg: IRegistration = {
       FirstName: this.firstName,
       LastName: this.lastName,
       OriginalLevel: this.originalLevel,
-      FinalLevel: this.finalLevel
-    }
+      FinalLevel: this.finalLevel,
+    };
     console.debug('Submitting new registration', reg);
 
     // Take the newly created registration, and add it to the store
     store.dispatch('add', [reg]).then(() => {
-      this.firstName = '';
-      this.lastName = '';
-      this.originalLevel = '';
-      this.finalLevel = '';
+      this.onReset();
 
       this.showSuccess = true;
 
@@ -63,6 +63,13 @@ export default class Registrations extends Vue {
         this.showSuccess = false;
       }, 2000);
     });
+  }
+
+  public onReset() {
+    this.firstName = '';
+    this.lastName = '';
+    this.originalLevel = '';
+    this.finalLevel = '';
   }
 }
 </script>

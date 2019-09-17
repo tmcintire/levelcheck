@@ -20,13 +20,13 @@ export default new Vuex.Store<IRegistrationState>({
     ],
   },
   mutations: {
-    add (state, payload){
-      state.registrations = state.registrations.concat(payload); 
-    }
+    add(state, payload) {
+      state.registrations = state.registrations.concat(payload);
+    },
   },
   actions: {
-    add (context, payload) {
+    add(context, payload) {
       context.commit('add', payload);
-    }
+    },
   },
 });
