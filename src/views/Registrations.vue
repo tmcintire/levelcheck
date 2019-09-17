@@ -19,7 +19,10 @@
       <div class="flex-col">
         <h4>This is the current vuex store for "registrations":</h4>
         <div class="flex-row" v-for="(registration, index) in registrations" :key="index">
-          <span>{{registration.FirstName}} {{registration.LastName}} - {{registration.OriginalLevel}}</span>
+          <span>
+            {{registration.FirstName}} {{registration.LastName}} ({{registration.ID}}) - {{registration.OriginalLevel}} 
+            <span v-if="registration.FinalLevel">- {{registration.FinalLevel}}</span>
+          </span>
         </div>
       </div>
     </div>
@@ -31,6 +34,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import store from '../store';
 import { IRegistration } from '../data/interfaces';
 import { mapState } from 'vuex';
+import { getNextId } from '../helpers';
 
 @Component({
   computed: mapState(['registrations']),
@@ -42,7 +46,9 @@ export default class Registrations extends Vue {
   public originalLevel: string = '';
   public finalLevel: string = '';
   public showSuccess: boolean = false;
+  public registrations!: IRegistration[];
 
+  /* Create a new registration and submit it to the store and database */
   public onSubmit(e: Event) {
     e.preventDefault();
     const reg: IRegistration = {
@@ -50,6 +56,7 @@ export default class Registrations extends Vue {
       LastName: this.lastName,
       OriginalLevel: this.originalLevel,
       FinalLevel: this.finalLevel,
+      ID: getNextId(this.registrations)
     };
     console.debug('Submitting new registration', reg);
 

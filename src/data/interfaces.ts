@@ -3,6 +3,7 @@ export interface IRegistration {
     LastName: string;
     OriginalLevel: string;
     FinalLevel: string;
+    ID: string;
 };
 
 
