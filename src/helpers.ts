@@ -1,6 +1,5 @@
 import { IRegistration } from "./data/interfaces";
 import * as _ from 'lodash';
-import { registrations } from './registrations';
 
 /* Look through the registrations and find the unique levels and return it as a string array */
 export const getLevelsFromRegistrations = (registrations: IRegistration[]): string[] => {

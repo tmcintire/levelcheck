@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import store from '../store';
+import { store } from '../store';
 import { IRegistration } from '../data/interfaces';
 import { mapState } from 'vuex';
 import { getNextId } from '../helpers';
