@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
-import { IRegistration } from './data/interfaces';
+import { IRegistration, IUser } from './data/interfaces';
+import * as registrations from './registrations.json';
 import { getLevelsFromRegistrations } from './helpers';
 
 Vue.use(Vuex);
@@ -8,27 +9,27 @@ Vue.use(Vuex);
 export interface IRegistrationState {
   registrations: IRegistration[];
   levels: string[];
+  user: IUser;
 }
 
-fetch("http://localhost:8080/api/registrations").then(res => {
-  return res.json();
+// fetch('/api/registrations').then((res) => {
+//   return res.json();
 
-  // get the unique levels from the data we have been provided, we'll use this to ask the administrator which levels need checks
-  //const levels = getLevelsFromRegistrations(res.json); 
-}).then((registrations) => {
-  store.dispatch('create', registrations);
+//   // get the unique levels from the data we have been provided, we'll use this to ask the
+//   // administrator which levels need checks const levels = getLevelsFromRegistrations(res.json);
+// }).then((registrations) => {
+//   store.dispatch('create', registrations);
 
-  // create the levels
-  const levels = getLevelsFromRegistrations(registrations);
-  store.dispatch('createLevels', levels);
-});
-
-
+//   // create the levels
+//   const levels = getLevelsFromRegistrations(registrations);
+//   store.dispatch('createLevels', levels);
+// });
 
 export const store = new Vuex.Store<IRegistrationState>({
   state: {
     registrations: [],
-    levels: []
+    levels: [],
+    user: null,
   },
   mutations: {
     add(state, payload) {
@@ -39,7 +40,13 @@ export const store = new Vuex.Store<IRegistrationState>({
     },
     createLevels(state, payload) {
       state.levels = payload;
-    }
+    },
+    setUser(state, payload) {
+      state.user = payload;
+    },
+    logout(state) {
+      state.user = null;
+    },
   },
   actions: {
     add(context, payload) {
@@ -50,6 +57,12 @@ export const store = new Vuex.Store<IRegistrationState>({
     },
     createLevels(context, payload) {
       context.commit('createLevels', payload);
-    }
+    },
+    setUser(context, payload) {
+      context.commit('setUser', payload);
+    },
+    logout(context) {
+      context.commit('logout');
+    },
   },
 });

@@ -56,7 +56,7 @@ export default class Registrations extends Vue {
       LastName: this.lastName,
       OriginalLevel: this.originalLevel,
       FinalLevel: this.finalLevel,
-      ID: getNextId(this.registrations)
+      ID: getNextId(this.registrations),
     };
     console.debug('Submitting new registration', reg);
 

@@ -1,13 +1,42 @@
 <template>
-    <div id="nav">
-        <div>
-            <router-link to="/">Home</router-link> |
-            <router-link to="/registrations">Registrations</router-link> |
-            <router-link to="/admin">Admin</router-link>
-        </div>
-        <router-view/>
+    <div id="nav" v-if="showNav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/registrations">Registrations</router-link> |
+      <router-link to="/admin">Admin</router-link>
+      <span @click="logout">Logout</span>
     </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import firebase from '../../firebase';
+import router from '@/router';
+import { Route } from 'vue-router';
+import { store } from '@/store';
+
+
+@Component
+export default class Nav extends Vue {
+  public showNav: boolean = true;
+
+  @Watch("$route", { immediate: true })
+  OnRouteChange(route: Route) {
+    if (route.name == "login" || route.name == "register") {
+      this.showNav = false;
+    } else {
+      this.showNav = true;
+    }
+  }
+
+  logout() {
+    store.dispatch('logout');
+    firebase.auth().signOut().then(() => {
+      router.push({name: "login"});
+    });
+  }
+}
+</script>
+
 
 <style scoped lang="less">
 #nav {

@@ -1,19 +1,32 @@
 <template>
   <div id="app">
-    <Nav />
+    <Nav v-if="loggedIn"/>
+    <router-view/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Nav from '@/components/Nav/Nav.vue'; // @ is an alias to /src
+import {getUserPermissions} from './data/users';
+import firebase from './firebase';
+window['firebase'] = firebase;
 
 @Component({
   components: {
     Nav,
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  public loggedIn: boolean = false;
+
+  mounted() {
+    firebase.auth().onAuthStateChanged((user: any) => {
+      this.loggedIn = !!user;
+      getUserPermissions(user.uid);
+    });
+  }
+}
 </script>
 
 <style lang="less">
