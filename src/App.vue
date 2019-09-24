@@ -15,12 +15,12 @@ window['firebase'] = firebase;
 @Component({
   components: {
     Nav,
-  }
+  },
 })
 export default class App extends Vue {
   public loggedIn: boolean = false;
 
-  mounted() {
+  private mounted() {
     firebase.auth().onAuthStateChanged((user: any) => {
       this.loggedIn = !!user;
       getUserPermissions(user.uid);
