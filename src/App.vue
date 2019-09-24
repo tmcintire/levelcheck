@@ -10,7 +10,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Nav from '@/components/Nav/Nav.vue'; // @ is an alias to /src
 import {getUserPermissions} from './data/users';
 import firebase from './firebase';
-window['firebase'] = firebase;
+window['firebase'] = firebase; // tslint:disable-line
 
 @Component({
   components: {
