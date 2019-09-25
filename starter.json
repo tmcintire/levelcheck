@@ -1,0 +1,50 @@
+{
+  "events": {
+    "1": {
+      "name": "CalBal Classic",
+      "levels": {
+        "0": "Beginner",
+        "1": "Intermediate",
+        "2": "Advanced"
+      },
+      "participants": {
+        "0": {
+          "name": "Tim McIntire",
+          "bib": 1234,
+          "id": 3,
+          "originalLevel": "Intermediate",
+          "finalLevel": "Advanced"
+        },
+        "1": {
+          "name": "Briana McIntire",
+          "bib": 1236,
+          "id": 2,
+          "originalLevel": "Intermediate",
+          "finalLevel": "Advanced"
+        },
+        "2": {
+          "name": "Marcus Thompson",
+          "bib": 1235,
+          "id": 1,
+          "originalLevel": "Intermediate",
+          "finalLevel": "Advanced"
+        }
+      }
+    }
+  },
+  "users": {
+    "name": "Tim McIntire",
+    "roleKey": "OhW61mc3HrR5xG9FUpfK",
+    "events": {
+      "1": true
+    }
+  },
+  "roles": {
+      "OhW61mc3HrR5xG9FUpfK": {
+          "role": "admin"
+      },
+      "Hj5CNhV9yBrhT4GSB9gf": {
+          "role": "user"
+      }
+  }
+}

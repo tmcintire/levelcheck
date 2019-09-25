@@ -1,35 +1,26 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
-import { IRegistration, IUser } from './data/interfaces';
+import { IParticipant, IUser, IEvent, IUserEvent } from './data/interfaces';
 import * as registrations from './registrations.json';
 import { getLevelsFromRegistrations } from './helpers';
 
 Vue.use(Vuex);
 
-export interface IRegistrationState {
-  registrations: IRegistration[];
+export interface IParticipantState {
+  registrations: IParticipant[];
   levels: string[];
   user: IUser;
+  event: IEvent;
+  userEvents: IUserEvent[];
 }
 
-// fetch('/api/registrations').then((res) => {
-//   return res.json();
-
-//   // get the unique levels from the data we have been provided, we'll use this to ask the
-//   // administrator which levels need checks const levels = getLevelsFromRegistrations(res.json);
-// }).then((registrations) => {
-//   store.dispatch('create', registrations);
-
-//   // create the levels
-//   const levels = getLevelsFromRegistrations(registrations);
-//   store.dispatch('createLevels', levels);
-// });
-
-export const store = new Vuex.Store<IRegistrationState>({
+export const store = new Vuex.Store<IParticipantState>({
   state: {
     registrations: [],
     levels: [],
     user: null,
+    event: null,
+    userEvents: null,
   },
   mutations: {
     add(state, payload) {
@@ -47,6 +38,12 @@ export const store = new Vuex.Store<IRegistrationState>({
     logout(state) {
       state.user = null;
     },
+    setEvent(state, payload) {
+      state.event = payload;
+    },
+    setUserEvents(state, payload) {
+      state.userEvents = payload;
+    },
   },
   actions: {
     add(context, payload) {
@@ -63,6 +60,12 @@ export const store = new Vuex.Store<IRegistrationState>({
     },
     logout(context) {
       context.commit('logout');
+    },
+    setEvent(context, payload) {
+      context.commit('setEvent', payload);
+    },
+    setUserEvents(context, payload) {
+      context.commit('setUserEvents', payload);
     },
   },
 });

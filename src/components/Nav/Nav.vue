@@ -1,5 +1,6 @@
 <template>
     <div id='nav' v-if='showNav'>
+      <span class="event-name">{{event && event.name}}</span>
       <router-link to='/'>Home</router-link> |
       <router-link to='/registrations'>Registrations</router-link> |
       <router-link to='/admin'>Admin</router-link> |
@@ -13,9 +14,12 @@ import firebase from '../../firebase';
 import router from '@/router';
 import { Route } from 'vue-router';
 import { store } from '@/store';
+import { mapState } from 'vuex';
 
 
-@Component
+@Component({
+  computed: mapState(['event']),
+})
 export default class Nav extends Vue {
   public showNav: boolean = true;
 
@@ -41,6 +45,11 @@ export default class Nav extends Vue {
 <style scoped lang='less'>
 #nav {
   padding: 30px;
+
+  .event-name {
+    margin-right: 50px;
+  }
+
   a, span {
     font-weight: bold;
     color: #2c3e50;

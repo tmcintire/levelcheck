@@ -10,6 +10,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Nav from '@/components/Nav/Nav.vue'; // @ is an alias to /src
 import {getUserPermissions} from './data/users';
 import firebase from './firebase';
+import { getUserEvents } from './data/api';
 window['firebase'] = firebase; // tslint:disable-line
 
 @Component({
@@ -23,7 +24,9 @@ export default class App extends Vue {
   private mounted() {
     firebase.auth().onAuthStateChanged((user: any) => {
       this.loggedIn = !!user;
-      getUserPermissions(user.uid);
+      getUserPermissions(user.uid).then(() => {
+        getUserEvents(user.uid);
+      });
     });
   }
 }
@@ -31,6 +34,7 @@ export default class App extends Vue {
 
 <style lang="less">
 @import './styles/globals';
+@import './styles/modal';
 @import '~bootstrap/dist/css/bootstrap.css';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 

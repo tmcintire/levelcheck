@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import AddEditParticipants from '@/components/AddEditParticipants.vue';
+import AddEditLevels from '@/components/AddEditLevels.vue';
 
 Vue.use(Router);
 
@@ -30,6 +32,16 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
+      children: [
+        {
+          path: 'participants',
+          component: AddEditParticipants,
+        },
+        {
+          path: 'levels',
+          component: AddEditLevels,
+        },
+      ],
     },
   ],
 });
