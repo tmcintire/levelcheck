@@ -1,11 +1,11 @@
 <template>
     <div v-if="userEvents">
-        <select v-model="selected" @change="handleEventSelection($event)">
-        <option value=""></option>
-        <option v-for="(event, index) in userEvents" v-bind:value="event.id" :key="index">
-            {{ event.name }}
-        </option>
-        </select>
+        <b-select v-model="selected" @change="handleEventSelection">
+            <option value=""></option>
+            <option v-for="(event, index) in userEvents" v-bind:value="event.id" :key="index">
+                {{ event.name }}
+            </option>
+        </b-select>
         <span>Selected: {{ event && event.name }}</span>
     </div>
     <div v-else class="flex-row flex-center"> 
@@ -32,8 +32,8 @@ export default class EventSelector extends Vue {
     }
 
     /** fetch the event details from firebase and set it to the store when the user makes this selection */
-    private handleEventSelection(event: any) {
-        setEventDetails(event.target.value);
+    private handleEventSelection(eventId: string) {
+        setEventDetails(eventId);
     }
 }
 </script>

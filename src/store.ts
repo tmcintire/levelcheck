@@ -68,4 +68,9 @@ export const store = new Vuex.Store<IParticipantState>({
       context.commit('setUserEvents', payload);
     },
   },
+  getters: {
+    user: (state: IParticipantState): IUser => {
+      return state.user;
+    },
+  },
 });

@@ -1,35 +1,20 @@
 <template>
-     <transition name="modal">
-        <div class="modal-mask">
-        <div class="modal-wrapper">
-            <div class="modal-container">
-            <div class="modal-header flex-row flex-align-center">
-                <slot name="header">
-                Add/Edit Level
-                </slot>
-                <b-button variant="danger" @click="$emit('close')">X</b-button>
-            </div>
-
-            <div class="modal-body">
-                <slot name="body">
-                   <b-form @submit="onSubmit" @reset="onReset">
-                        <b-form-group label="Level name">
-                            <b-form-input class="form-input" v-model="name" placeholder="Name"></b-form-input>
-                        </b-form-group>
-                        <b-form-group label="This level requires a level check">
-                            <b-form-checkbox class="form-input" v-model="levelCheck"></b-form-checkbox>
-                        </b-form-group>
-
-                        <b-button type="submit" variant="primary">Submit</b-button>
-                        <b-button type="reset" variant="danger">Reset</b-button>
-                        <b-button variant="danger" @click="onDelete">Delete</b-button>
-                    </b-form>
-                </slot>
-            </div>
-            </div>
+    <div class="overlay">
+        <div class="modal-header flex-row flex-align-center">
+            <span class="header">
+              Add/Edit Level
+            </span>
+             <v-btn color="error" @click="$emit('close')">X</v-btn>
         </div>
-        </div>
-    </transition>
+        <v-form>
+            <v-text-field :label="'Name'" v-model="name"></v-text-field>
+            <v-checkbox :label="`This level requires a level check`" v-model="levelCheck"></v-checkbox>
+
+            <v-btn @click="onSubmit" type="submit" color="primary">Submit</v-btn>
+            <v-btn @click="onReset" type="reset" color="error">Reset</v-btn>
+            <v-btn @click="onDelete" color="error">Delete</v-btn>
+        </v-form>
+    </div>
 </template>
 
 <script lang="ts">
@@ -53,6 +38,7 @@ export default class AddEditLevel extends Vue {
         const level: ILevel = {
             name: this.name,
             levelCheck: this.levelCheck,
+            id: this.id,
         };
         this.$emit('close');
 

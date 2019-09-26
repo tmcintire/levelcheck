@@ -25,9 +25,11 @@
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.3",
+    "vuetify": "^2.0.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@mdi/font": "^4.4.95",
     "@types/lodash": "^4.14.138",
     "@types/node": "^12.7.5",
     "@types/uuid": "^3.4.5",
@@ -39,8 +41,12 @@
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "nodemon": "^1.19.2",
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
     "script-loader": "^0.7.2",
     "typescript": "^3.4.3",
-    "vue-template-compiler": "^2.6.10"
+    "vue-cli-plugin-vuetify": "^0.6.3",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
   }
 }

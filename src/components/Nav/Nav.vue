@@ -3,6 +3,7 @@
       <span class="event-name">{{event && event.name}}</span>
       <router-link to='/'>Home</router-link> |
       <router-link to='/registrations'>Registrations</router-link> |
+      <router-link to='/levelcheck'>Level Check</router-link> |
       <router-link to='/admin'>Admin</router-link> |
       <span @click='logout'>Logout</span>
     </div>
@@ -11,7 +12,7 @@
 <script lang='ts'>
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import firebase from '../../firebase';
-import router from '@/router';
+import { router } from '@/router';
 import { Route } from 'vue-router';
 import { store } from '@/store';
 import { mapState } from 'vuex';

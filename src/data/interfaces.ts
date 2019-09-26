@@ -3,24 +3,36 @@ export interface IParticipant {
     originalLevel: string;
     finalLevel: string;
     id?: string;
-    bib: string;
+    bib: number;
 }
 
 export interface IUser {
   name: string;
   role: string;
+  levelCheckTutorial: boolean;
+  adminTutorial: boolean;
+  events: string[];
+  id: string;
 }
 
 export interface IEvent {
   name: string;
-  levels: string[];
+  levels: IEventLevels[];
   participants: IParticipant;
   eventId: string;
 }
 
+export interface IUserEvents {
+  [id: string]: IUserEvent;
+}
+
 export interface IUserEvent {
   name: string;
-  id: string;
+  id?: string;
+}
+
+export interface IEventLevels {
+  [id: string]: ILevel;
 }
 
 export interface ILevel {

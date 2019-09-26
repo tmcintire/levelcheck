@@ -1,8 +1,10 @@
 <template>
       <div v-if="event" class="container flex-col">
         <RegistrationsList :selectedParticipant="selectedParticipant" v-on:participantSelected="selectParticipant" />
-        <b-button type="submit" variant="primary" @click="newRegistration">New Registration</b-button>
-        <AddEditParticipant v-if="selectedParticipant" :selectedParticipant="selectedParticipant" :eventId="event.eventId" v-on:close="closeModal"/>
+        <v-btn color="primary" @click="newRegistration">New Registration</v-btn>
+        <v-overlay :value="selectedParticipant">
+            <AddEditParticipant :selectedParticipant="selectedParticipant" :eventId="event.eventId" :levels="event.levels" v-on:close="closeModal"/>
+        </v-overlay>
       </div>
       <div v-else>
         <h3>Please select an event first</h3>
@@ -44,7 +46,7 @@ export default class AddEditParticipants extends Vue {
     public newRegistration() {
       this.selectedParticipant = {
         name: '',
-        bib: '',
+        bib: 0,
         finalLevel: '',
         originalLevel: '',
         id: uuid(),

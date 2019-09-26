@@ -3,7 +3,8 @@ import { firestore } from 'firebase-admin';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { store } from '@/store';
-import { IEvent, IUserEvent, IParticipant, ILevel } from './interfaces';
+import { IEvent, IUserEvent, IParticipant, ILevel, IUserEvents } from './interfaces';
+import { __values } from 'tslib';
 
 /** Takes in an eventId and sets that events details to the main state active event */
 export const setEventDetails = async (eventId: string) => {
@@ -25,7 +26,7 @@ export const setEventDetails = async (eventId: string) => {
 /** Fetch all of the users events and set them to a selection box for them to select the active event */
 export const getUserEvents = (userId: string) => {
     firebaseRef.collection('users').doc(userId).onSnapshot((snapshot) => {
-        const fbUser = snapshot.data();
+        const fbUser: IUserEvents = snapshot.data();
         if (fbUser.events) {
             console.log('Fetched users events', fbUser.events);
 
@@ -38,7 +39,7 @@ export const getUserEvents = (userId: string) => {
                         id: ev,
                     });
 
-                    if (userEvents.length === fbUser.events.length) {
+                    if (userEvents.length === Object.keys(fbUser.events).length) {
                         store.dispatch('setUserEvents', userEvents);
                     }
                 });
@@ -92,7 +93,15 @@ export const addEditParticipant = (eventId: string, participant: IParticipant, p
     }, { merge: true });
 };
 
-
+export const skipTutorial = (tutorialValue: string, value: boolean) => new Promise((resolve, reject) => {
+    const userid = store.getters.user.id;
+    console.log(store.getters.user);
+    if (userid) {
+        firebaseRef.collection('users').doc(userid).update({
+           [tutorialValue]: value,
+        }).then(() => resolve());
+    }
+});
 
 
 

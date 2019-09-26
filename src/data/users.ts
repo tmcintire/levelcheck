@@ -4,12 +4,16 @@ import { IUser } from './interfaces';
 
 /** Fetch the user permissions for a given userID and set it to the store */
 export const getUserPermissions = (userId: string) => new Promise((resolve) => {
-  firebaseRef.collection('users').doc(userId).get().then((snapshot) => {
-    console.log('Got User', snapshot.data());
+  firebaseRef.collection('users').doc(userId).onSnapshot((snapshot) => {
+    console.log('User changed', snapshot.data());
     const fbUser = snapshot.data();
     const user: IUser = {
       name: fbUser.name,
       role: '',
+      levelCheckTutorial: fbUser.levelCheckTutorial,
+      adminTutorial: fbUser.adminTutorial,
+      events: fbUser.events,
+      id: userId,
     };
 
     if (user) {

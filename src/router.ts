@@ -3,10 +3,23 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import AddEditParticipants from '@/components/AddEditParticipants.vue';
 import AddEditLevels from '@/components/AddEditLevels.vue';
+import { store } from './store';
 
 Vue.use(Router);
 
-export default new Router({
+export const navigateName = (route: string) => {
+  if (route !== router.currentRoute.name) {
+    router.push({name: route}).catch((err) => console.error(err));
+  }
+};
+
+export const navigatePath = (path: string) => {
+  if (path !== router.currentRoute.path) {
+    router.push({path}).catch((err) => console.error(err));
+  }
+};
+
+export const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -32,6 +45,48 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
+      children: [
+        {
+          path: 'participants',
+          component: AddEditParticipants,
+        },
+        {
+          path: 'levels',
+          component: AddEditLevels,
+        },
+      ],
+    },
+    {
+      path: '/levelcheck',
+      name: 'levelcheck',
+      component: () => import(/* webpackChunkName: "levelcheck" */ './views/LevelCheck.vue'),
+      children: [
+        {
+          path: 'participants',
+          component: AddEditParticipants,
+        },
+        {
+          path: 'levels',
+          component: AddEditLevels,
+        },
+      ],
+      beforeEnter: (to, from, next) => {
+        const needsLCTutorial = store.getters.user.levelCheckTutorial;
+        console.log(store);
+
+        if (needsLCTutorial) {
+          next({
+            path: '/levelchecktutorial',
+          });
+        } else {
+          next();
+        }
+      },
+    },
+    {
+      path: '/levelchecktutorial',
+      name: 'levelchecktutorial',
+      component: () => import(/* webpackChunkName: "levelchecktutorial" */ './views/LevelCheckTutorial.vue'),
       children: [
         {
           path: 'participants',

@@ -9,7 +9,9 @@
             {{level.name}} - {{level.levelCheck ? "Level Check" : "No Level Check"}}
         </div>
         <b-button type="submit" variant="primary" @click="newLevel">New Level</b-button>
-        <AddEditLevel v-if="selectedLevel" :selectedLevel="selectedLevel" :eventId="eventId" v-on:close="onClose"/>
+        <v-overlay opacity="0.90" :value="selectedLevel">
+            <AddEditLevel :selectedLevel="selectedLevel" :eventId="eventId" v-on:close="onClose"/>
+        </v-overlay>
     </div>
 </template>
 
@@ -35,15 +37,15 @@ export default class AddEditParticipant extends Vue {
 
     public selectLevel(level: ILevel, key: string) {
         this.selectedLevel = level;
-        this.selectedLevel.id = key;
     }
 
     public newLevel() {
-      this.selectedLevel = {
-        name: '',
-        levelCheck: false,
-        id: uuid(),
-      };
+        const id = uuid();
+        this.selectedLevel = {
+            name: '',
+            levelCheck: false,
+            id,
+        };
     }
 
     public onClose() {

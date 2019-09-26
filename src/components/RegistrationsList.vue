@@ -1,6 +1,5 @@
 <template>
   <div v-if="participants" class="registrations">
-        <h3>Registrations</h3>
         <div 
             class="flex-row hover" 
             v-for="(participant, index) in participants" 
