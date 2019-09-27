@@ -2,7 +2,7 @@
       <div v-if="event" class="container flex-col">
         <RegistrationsList :selectedParticipant="selectedParticipant" v-on:participantSelected="selectParticipant" />
         <v-btn color="primary" @click="newRegistration">New Registration</v-btn>
-        <v-overlay :value="selectedParticipant">
+        <v-overlay opacity="0.90" :value="selectedParticipant">
             <AddEditParticipant :selectedParticipant="selectedParticipant" :eventId="event.eventId" :levels="event.levels" v-on:close="closeModal"/>
         </v-overlay>
       </div>

@@ -4,6 +4,7 @@ import Home from './views/Home.vue';
 import AddEditParticipants from '@/components/AddEditParticipants.vue';
 import AddEditLevels from '@/components/AddEditLevels.vue';
 import { store } from './store';
+import { getCookie } from './data/cookies';
 
 Vue.use(Router);
 
@@ -27,6 +28,9 @@ export const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/login',
@@ -40,6 +44,9 @@ export const router = new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "registrations" */ './views/Registrations.vue'),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/admin',
@@ -55,6 +62,10 @@ export const router = new Router({
           component: AddEditLevels,
         },
       ],
+      meta: {
+        requiresAuth: true,
+        adminOnly: true,
+      },
     },
     {
       path: '/levelcheck',
@@ -70,6 +81,10 @@ export const router = new Router({
           component: AddEditLevels,
         },
       ],
+      meta: {
+        requiresAuth: true,
+        adminOnly: true,
+      },
       beforeEnter: (to, from, next) => {
         const needsLCTutorial = store.getters.user.levelCheckTutorial;
         console.log(store);
@@ -100,3 +115,23 @@ export const router = new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    const refreshToken = getCookie('refreshToken');
+    if (!refreshToken) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next(); // make sure to always call next()!
+  }
+});
+
+export default router;

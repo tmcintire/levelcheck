@@ -35,6 +35,9 @@ export default class Nav extends Vue {
 
   private logout() {
     store.dispatch('logout');
+    document.cookie = "user=";
+    document.cookie = "role=";
+    document.cookie = "refreshToken=";
     firebase.auth().signOut().then(() => {
       router.push({name: 'login'});
     });
