@@ -4,6 +4,7 @@
     <v-tabs fixed-tabs>
       <v-tab @click="navigate('/admin/participants')">Participants</v-tab>
       <v-tab @click="navigate('/admin/levels')">Levels</v-tab>
+      <v-tab @click="navigate('/admin/events')">Events</v-tab>
     </v-tabs>
     <router-view />
   </div>

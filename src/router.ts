@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import AddEditParticipants from '@/components/AddEditParticipants.vue';
 import AddEditLevels from '@/components/AddEditLevels.vue';
+import AddEditEvents from '@/components/AddEditEvent/AddEditEvents.vue';
 import { store } from './store';
 import { getCookie } from './data/cookies';
 
@@ -61,6 +62,10 @@ export const router = new Router({
           path: 'levels',
           component: AddEditLevels,
         },
+        {
+          path: 'events',
+          component: AddEditEvents,
+        },
       ],
       meta: {
         requiresAuth: true,
@@ -87,8 +92,6 @@ export const router = new Router({
       },
       beforeEnter: (to, from, next) => {
         const needsLCTutorial = store.getters.user.levelCheckTutorial;
-        console.log(store);
-
         if (needsLCTutorial) {
           next({
             path: '/levelchecktutorial',
@@ -127,7 +130,17 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath },
       });
     } else {
-      next();
+
+      // if we have authenticated, we need to also make sure we have an event selected
+
+      if (!store.state.event && to.path !== '/') {
+        next({
+          path: '/',
+        });
+      } else {
+        next();
+      }
+
     }
   } else {
     next(); // make sure to always call next()!

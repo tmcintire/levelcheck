@@ -1,53 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
-      <v-list dense>
-        <v-list-item @click="navigate('home')">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="navigate('registrations')">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Registrations</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="navigate('levelcheck')">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Level Check</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="navigate('admin')">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Admin</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar
-      app
-      color="indigo"
-      dark
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title v-if="event">{{event.name}} Level Check</v-toolbar-title>
-    </v-app-bar>
+    <Nav />
 
     <v-content>
       <v-container>
@@ -81,7 +34,6 @@ window['firebase'] = firebase; // tslint:disable-line
 })
 export default class App extends Vue {
   public loggedIn: boolean = false;
-  public drawer: any = null;
 
   public navigate(route: string) {
     if (route !== router.currentRoute.name) {

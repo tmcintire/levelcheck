@@ -4,6 +4,7 @@ export interface IParticipant {
     finalLevel: string;
     id?: string;
     bib: number;
+    role: string;
 }
 
 export interface IUser {
@@ -17,7 +18,7 @@ export interface IUser {
 
 export interface IEvent {
   name: string;
-  levels: IEventLevels[];
+  levels: IEventLevels;
   participants: IParticipant;
   eventId: string;
 }
