@@ -1,9 +1,9 @@
-import firebase, { firebaseRef } from '../firebase';
+import { firebaseRef } from '../firebase';
 import { firestore } from 'firebase-admin';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { store } from '@/store';
-import { IEvent, IUserEvent, IParticipant, ILevel, IUserEvents, TVP, IUser } from './interfaces';
+import { IEvent, IParticipant, ILevel, TVP, IUser } from './interfaces';
 import { __values } from 'tslib';
 
 /** Takes in an eventId and sets that events details to the main state active event */
@@ -30,6 +30,7 @@ export const setSelectedEventDetails = (eventId: string) => {
 
             if (event) {
                 event.eventId = eventId;
+                event.newEvent = false;
                 store.dispatch('setSelectedEvent', event);
             }
         });
@@ -118,16 +119,23 @@ export const skipTutorial = (tutorialValue: string, value: boolean) => new Promi
     }
 });
 
-export const createEvent = (event: IEvent) => {
-    const newId = uuid();
-    firebaseRef.collection('events').doc(newId).set(event).then(() => {
-        const userid = store.getters.user.id;
-        firebaseRef.collection('users').doc(userid).set({
-            events: {
-                [newId]: true,
-            },
-        }, {merge: true});
-    });
-};
+export const addEditEvent = (event: IEvent) => new Promise((resolve, reject) => {
+    if (store.getters.selectedEvent.newEvent) {
+        // This is a new event
+        const newId = uuid();
+        firebaseRef.collection('events').doc(newId).set(event).then(() => {
+            const userid = store.getters.user.id;
+            firebaseRef.collection('users').doc(userid).set({
+                events: {
+                    [newId]: true,
+                },
+            }, {merge: true}).then(() => resolve());
+        });
+    } else {
+        firebaseRef.collection('events').doc(event.eventId).set(event, {merge: true}).then(() => {
+            resolve();
+        });
+    }
+});
 
 

@@ -32,7 +32,7 @@
       <v-stepper-content step="3">
         
 
-        <v-btn color="primary" @click="createEvent">Submit</v-btn>
+        <v-btn color="primary" @click="addEditEvent">Submit</v-btn>
         <v-btn color="primary" @click="newEvent -= 1">Back</v-btn>
         <v-btn text @click="$emit('close')">Cancel</v-btn>
       </v-stepper-content>
@@ -48,7 +48,7 @@ import LevelInfo from './LevelInfo.vue';
 import { IEvent } from '../../data/interfaces';
 import uuid from 'uuid';
 import { mapState } from 'vuex';
-import { createEvent } from '../../data/api';
+import { addEditEvent } from '../../data/api';
 
 @Component({
   components: {
@@ -59,10 +59,12 @@ import { createEvent } from '../../data/api';
 })
 export default class AddEditEvent extends Vue {
     public newEvent: number = 0;
+    public selectedEvent!: IEvent;
 
-    public createEvent() {
-      createEvent(this.$store.state.selectedEvent);
-      this.$emit('close');
+    public addEditEvent() {
+      addEditEvent(this.$store.state.selectedEvent).then(() => {
+        this.$emit('close');
+      });
     }
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
     <v-form>
         <h3 class="flex-row flex-center">Level Info</h3>
-        <div class="flex-row" v-for="(level, key) in levels" :key="key">
+        <div class="flex-row" v-for="level in levels" :key="level.id">
             <v-text-field 
                 :label="'Name'" 
                 :value="level.name"
-                v-on:input="updateSelectedEvent({property: 'levels', field: 'name', value: $event, key})"/>
+                v-on:input="updateSelectedEvent({property: 'levels', field: 'name', value: $event, key: level.id})"/>
             <div class="flex-col flex-center">
                 <span>Level Check</span>
-                <v-checkbox class="no-margin" :value="level.levelCheck" v-on:change="updateSelectedEvent({property: 'levels', field: 'levelCheck', value: $event, key})"></v-checkbox>
+                <v-checkbox class="no-margin" v-model="level.levelCheck" v-on:change="updateSelectedEvent({property: 'levels', field: 'levelCheck', value: $event, key: level.id})"></v-checkbox>
             </div>
         </div>
         <v-btn @click="addNewLevel">+</v-btn>
@@ -24,7 +24,7 @@ import { mapState } from 'vuex';
 @Component({
     computed: mapState({
         levels: (state: IApplicationState) => {
-             return Object.entries(state.event.levels).map((level: [string, ILevel]) => {
+             return Object.entries(state.selectedEvent.levels).map((level: [string, ILevel]) => {
                 return {...level[1], id: level[0]};
             }).sort((a, b) => a.order - b.order);
         },

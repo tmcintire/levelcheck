@@ -13,7 +13,7 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { mapState } from 'vuex';
 import { setEventDetails } from '../data/api';
-import { IEvent, IUserEvent, TVP, IApplicationState } from '../data/interfaces';
+import { IEvent, TVP, IApplicationState } from '../data/interfaces';
 
 @Component({
     computed: mapState({

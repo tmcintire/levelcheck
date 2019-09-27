@@ -21,6 +21,7 @@ export interface IEvent {
   levels: IEventLevels;
   participants: IParticipant;
   eventId: string;
+  newEvent: boolean;
 }
 
 export interface IUserEvents {

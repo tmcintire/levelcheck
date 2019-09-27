@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ILevel, IEvent, IUserEvent, TVP } from '@/data/interfaces';
+import { ILevel, IEvent, TVP } from '@/data/interfaces';
 import AddEditEvent from '@/components/AddEditEvent/AddEditEvent.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
 import { v4 as uuid } from 'uuid';
@@ -45,6 +45,7 @@ export default class AddEditEvents extends Vue {
                     levelCheck: false,
                 },
             },
+            newEvent: true,
         };
 
         this.$store.commit('setSelectedEvent', newSelectedEvent);

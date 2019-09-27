@@ -100,5 +100,8 @@ export const store = new Vuex.Store<IApplicationState>({
     user: (state: IApplicationState): IUser => {
       return state.user;
     },
+    selectedEvent: (state: IApplicationState): IEvent => {
+      return state.selectedEvent;
+    },
   },
 });
