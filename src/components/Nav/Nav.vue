@@ -73,7 +73,6 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import firebase from '../../firebase';
 import { router, navigateName } from '@/router';
 import { Route } from 'vue-router';
-import { store } from '@/store';
 import { mapState } from 'vuex';
 import { setEventDetails } from '../../data/api';
 
@@ -105,10 +104,10 @@ export default class Nav extends Vue {
   }
 
   private logout() {
-    store.dispatch('logout');
-    document.cookie = "user=";
-    document.cookie = "role=";
-    document.cookie = "refreshToken=";
+    this.$store.dispatch('logout');
+    document.cookie = 'user=';
+    document.cookie = 'role=';
+    document.cookie = 'refreshToken=';
     firebase.auth().signOut().then(() => {
       router.push({name: 'login'});
     });

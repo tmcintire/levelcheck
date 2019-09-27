@@ -7,14 +7,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { store } from '../../store';
 
 @Component
 export default class EventInfo extends Vue {
     @Prop() public name: string;
 
     public updateSelectedEvent(payload) {
-        store.commit('updateSelectedEvent', payload);
+        this.$store.commit('updateSelectedEvent', payload);
     }
 }
 </script>

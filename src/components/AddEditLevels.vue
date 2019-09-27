@@ -17,24 +17,23 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ILevel } from '../data/interfaces';
+import { ILevel, IApplicationState } from '../data/interfaces';
 import AddEditLevel from '@/components/AddEditLevel.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
 import { v4 as uuid } from 'uuid';
-import { IParticipantState } from '../store';
 
 @Component({
     components: {
         AddEditLevel,
     },
     computed: mapState({
-        levels: (state: IParticipantState) => {
+        levels: (state: IApplicationState) => {
             return Object.entries(state.event.levels).map((level: [string, ILevel]) => {
                 return {...level[1], id: level[0]};
             }).sort((a, b) => a.order - b.order);
 
         },
-        eventId: (state: IParticipantState) => state.event.eventId,
+        eventId: (state: IApplicationState) => state.event.eventId,
     }),
 })
 export default class AddEditParticipant extends Vue {

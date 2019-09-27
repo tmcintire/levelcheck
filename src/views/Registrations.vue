@@ -20,12 +20,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { store } from '../store';
-import { IParticipant } from '../data/interfaces';
+import { Component, Vue } from 'vue-property-decorator';
 import EventSelector from '@/components/EventSelector.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
-import { getNextId } from '../helpers';
 
 @Component({
   components: {

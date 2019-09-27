@@ -2,7 +2,8 @@ export const getCookie = (cname: string) => {
     const name = cname + '=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) === ' ') {
         c = c.substring(1);
@@ -12,4 +13,4 @@ export const getCookie = (cname: string) => {
       }
     }
     return '';
-  }
+  };

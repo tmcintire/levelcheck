@@ -18,13 +18,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import * as _ from 'lodash';
-import { IParticipant } from '../data/interfaces';
+import { IParticipant, IApplicationState } from '../data/interfaces';
 import { mapState } from 'vuex';
-import { IParticipantState } from '../store';
 
 @Component({
     computed: mapState({
-        participants: (state: IParticipantState) => {
+        participants: (state: IApplicationState) => {
             const participants = state.event.participants;
             _.forEach(participants, (p: any, key: any) => {
                 p.id = key;

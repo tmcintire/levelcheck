@@ -21,7 +21,6 @@ import { ILevel, IEvent, IUserEvent } from '@/data/interfaces';
 import AddEditEvent from '@/components/AddEditEvent/AddEditEvent.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
 import { v4 as uuid } from 'uuid';
-import { store } from '../../store';
 import { setSelectedEventDetails } from '../../data/api';
 
 @Component({
@@ -45,11 +44,11 @@ export default class AddEditEvents extends Vue {
             eventId: id,
         };
 
-        store.commit('setSelectedEvent', newSelectedEvent);
+        this.$store.commit('setSelectedEvent', newSelectedEvent);
     }
 
     public onClose() {
-        store.commit('setSelectedEvent', null);
+        this.$store.commit('setSelectedEvent', null);
     }
 }
 </script>

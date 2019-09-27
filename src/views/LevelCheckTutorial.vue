@@ -6,20 +6,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { store } from '../store';
-import { IParticipant } from '../data/interfaces';
-import EventSelector from '@/components/EventSelector.vue'; // @ is an alias to /src;
-import { mapState } from 'vuex';
-import { getNextId } from '../helpers';
+import { Component, Vue } from 'vue-property-decorator';
 import { skipTutorial } from '../data/api';
 import { router } from '../router';
 
 @Component
 export default class LevelCheckTutorial extends Vue {
   public skipTutorial() {
-    const needsLCTutorial = store.getters.user.levelCheckTutorial;
-    console.log(store);
+    const needsLCTutorial = this.$store.getters.user.levelCheckTutorial;
 
     skipTutorial('levelCheckTutorial', false).then(() => {
       router.push('levelcheck');

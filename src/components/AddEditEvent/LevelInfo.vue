@@ -17,23 +17,22 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { IEventLevels } from '@/data/interfaces';
+import { IEventLevels, IApplicationState } from '@/data/interfaces';
 import uuid from 'uuid';
-import { store, IParticipantState } from '../../store';
 import { mapState } from 'vuex';
 
 @Component({
     computed: mapState({
-        levels: (state: IParticipantState) => state.selectedEvent.levels,
+        levels: (state: IApplicationState) => state.selectedEvent.levels,
     }),
 })
 export default class LevelInfo extends Vue {
     public addNewLevel() {
-      store.commit('addNewLevel');
+      this.$store.commit('addNewLevel');
     }
 
     public updateSelectedEvent(payload) {
-        store.commit('updateSelectedEvent', payload);
+        this.$store.commit('updateSelectedEvent', payload);
     }
 }
 </script>

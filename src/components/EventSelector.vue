@@ -13,14 +13,13 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { mapState } from 'vuex';
 import { setEventDetails } from '../data/api';
-import { IEvent, IUserEvent, TVP } from '../data/interfaces';
-import { IParticipantState } from '../store';
+import { IEvent, IUserEvent, TVP, IApplicationState } from '../data/interfaces';
 
 @Component({
     computed: mapState({
-        userEvents: (state: IParticipantState) => state.userEvents,
-        event: (state: IParticipantState) => state.event,
-        eventId: (state: IParticipantState) => state.event ? state.event.eventId : '',
+        userEvents: (state: IApplicationState) => state.userEvents,
+        event: (state: IApplicationState) => state.event,
+        eventId: (state: IApplicationState) => state.event ? state.event.eventId : '',
     }),
 })
 export default class EventSelector extends Vue {

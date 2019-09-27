@@ -14,7 +14,7 @@ export const getNextId = (registrations: IParticipant[]): string => {
     let maxId = 0;
     const IDs = _.map(registrations, (reg: IParticipant) => reg.id);
     if (IDs) {
-        maxId = _.max(IDs) || 0;
+        maxId = parseInt(_.max(IDs), 10) || 0;
     }
 
     return (maxId + 1).toString();

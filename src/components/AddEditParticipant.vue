@@ -9,6 +9,7 @@
         <b-form @submit="onSubmit" @reset="onReset">
             <b-form-input class="form-input" v-model="name" placeholder="Name"></b-form-input>
             <b-form-input type="number" class="form-input" v-model="bib" placeholder="Bib Number"></b-form-input>
+            <b-form-input type="number" class="form-input" v-model="role" placeholder="Bib Number"></b-form-input>
             <b-form-select class="form-input" v-model="originalLevel" :options="levelOptions"></b-form-select>
             <b-form-select class="form-input" v-model="finalLevel" :options="levelOptions"></b-form-select>
 
@@ -37,6 +38,7 @@ export default class AddEditLevel extends Vue {
     public id: string = '';
     public originalLevel: string = '';
     public finalLevel: string = '';
+    public role: string = '';
     public showSuccess: boolean = false;
     public registrations!: IParticipant[];
     public levelOptions: string[] = [];
@@ -57,6 +59,7 @@ export default class AddEditLevel extends Vue {
             bib: parseInt(this.bib, 10),
             originalLevel: this.originalLevel,
             finalLevel: this.finalLevel,
+            role: this.role,
         };
 
         this.$emit('close');

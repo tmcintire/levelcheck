@@ -1,24 +1,11 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
-import { IParticipant, IUser, IEvent, IUserEvent, ILevel, TVP } from './data/interfaces';
-import * as registrations from './registrations.json';
-import { getLevelsFromRegistrations } from './helpers';
+import {IUser, IEvent, ILevel, TVP, IApplicationState } from './data/interfaces';
 import uuid from 'uuid';
-import { isContext } from 'vm';
 
 Vue.use(Vuex);
 
-export interface IParticipantState {
-  registrations: IParticipant[];
-  levels: string[];
-  user: IUser;
-  event: IEvent;
-  userEvents: TVP[];
-  selectedEvent: IEvent;
-  levelCheckLevel: string;
-}
-
-export const store = new Vuex.Store<IParticipantState>({
+export const store = new Vuex.Store<IApplicationState>({
   state: {
     registrations: [],
     levels: [],
@@ -110,7 +97,7 @@ export const store = new Vuex.Store<IParticipantState>({
     },
   },
   getters: {
-    user: (state: IParticipantState): IUser => {
+    user: (state: IApplicationState): IUser => {
       return state.user;
     },
   },

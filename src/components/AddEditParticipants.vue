@@ -13,15 +13,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { store } from '../store';
-import { IParticipant, IEvent } from '../data/interfaces';
+import { Component, Vue } from 'vue-property-decorator';
+import { IParticipant } from '../data/interfaces';
 import EventSelector from '@/components/EventSelector.vue'; // @ is an alias to /src;
 import RegistrationsList from '@/components/RegistrationsList.vue'; // @ is an alias to /src;
 import AddEditParticipant from '@/components/AddEditParticipant.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
-import { getNextId } from '../helpers';
-import { addParticipant } from '../data/api';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -50,6 +47,7 @@ export default class AddEditParticipants extends Vue {
         finalLevel: '',
         originalLevel: '',
         id: uuid(),
+        role: '',
       };
     }
 }

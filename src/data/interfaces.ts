@@ -46,4 +46,13 @@ export interface TVP {
   value: string;
 }
 
+export interface IApplicationState {
+  registrations: IParticipant[];
+  levels: string[];
+  user: IUser;
+  event: IEvent;
+  userEvents: TVP[];
+  selectedEvent: IEvent;
+  levelCheckLevel: string;
+}
 
