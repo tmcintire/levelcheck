@@ -48,6 +48,7 @@ import LevelInfo from './LevelInfo.vue';
 import { IEvent } from '../../data/interfaces';
 import uuid from 'uuid';
 import { mapState } from 'vuex';
+import { createEvent } from '../../data/api';
 
 @Component({
   components: {
@@ -60,8 +61,8 @@ export default class AddEditEvent extends Vue {
     public newEvent: number = 0;
 
     public createEvent() {
-        console.log('creating event');
+      createEvent(this.$store.state.selectedEvent);
+      this.$emit('close');
     }
-
 }
 </script>

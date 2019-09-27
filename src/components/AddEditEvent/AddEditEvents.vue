@@ -6,7 +6,7 @@
             @click="selectEvent(ev, key)"
             class="flex-row hover"
             :class="selectedEvent === ev ? 'active' : ''">
-            {{ev.name}}
+            {{ev.text}}
         </div>
         <b-button type="submit" variant="primary" @click="newEvent">New Event</b-button>
         <v-overlay opacity="0.90" :value="selectedEvent">
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ILevel, IEvent, IUserEvent } from '@/data/interfaces';
+import { ILevel, IEvent, IUserEvent, TVP } from '@/data/interfaces';
 import AddEditEvent from '@/components/AddEditEvent/AddEditEvent.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
 import { v4 as uuid } from 'uuid';
@@ -31,17 +31,20 @@ import { setSelectedEventDetails } from '../../data/api';
 })
 export default class AddEditEvents extends Vue {
 
-    public selectEvent(event: IUserEvent, key: string) {
-        setSelectedEventDetails(event.id);
+    public selectEvent(event: TVP, key: string) {
+        setSelectedEventDetails(event.value);
     }
 
     public newEvent() {
-        const id = uuid();
         const newSelectedEvent = {
             name: '',
             participants: null,
-            levels: null,
-            eventId: id,
+            levels: {
+                [uuid()]: {
+                    name: '',
+                    levelCheck: false,
+                },
+            },
         };
 
         this.$store.commit('setSelectedEvent', newSelectedEvent);

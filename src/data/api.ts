@@ -3,7 +3,7 @@ import { firestore } from 'firebase-admin';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { store } from '@/store';
-import { IEvent, IUserEvent, IParticipant, ILevel, IUserEvents, TVP } from './interfaces';
+import { IEvent, IUserEvent, IParticipant, ILevel, IUserEvents, TVP, IUser } from './interfaces';
 import { __values } from 'tslib';
 
 /** Takes in an eventId and sets that events details to the main state active event */
@@ -41,17 +41,17 @@ export const setSelectedEventDetails = (eventId: string) => {
 /** Fetch all of the users events and set them to a selection box for them to select the active event */
 export const getUserEvents = (userId: string) => {
     firebaseRef.collection('users').doc(userId).onSnapshot((snapshot) => {
-        const fbUser: IUserEvents = snapshot.data();
+        const fbUser: IUser = snapshot.data() as IUser;
         if (fbUser.events) {
             console.log('Fetched users events', fbUser.events);
 
             const userEvents: TVP[] = [];
 
-            _.forEach(fbUser.events, (ev) => {
-                eventDetails(ev).then((event: IEvent) => {
+            _.forEach(fbUser.events, (ev, id) => {
+                eventDetails(id).then((event: IEvent) => {
                     userEvents.push({
                         text: event.name,
-                        value: ev,
+                        value: id,
                     });
 
                     if (userEvents.length === Object.keys(fbUser.events).length) {
@@ -118,5 +118,16 @@ export const skipTutorial = (tutorialValue: string, value: boolean) => new Promi
     }
 });
 
+export const createEvent = (event: IEvent) => {
+    const newId = uuid();
+    firebaseRef.collection('events').doc(newId).set(event).then(() => {
+        const userid = store.getters.user.id;
+        firebaseRef.collection('users').doc(userid).set({
+            events: {
+                [newId]: true,
+            },
+        }, {merge: true});
+    });
+};
 
 

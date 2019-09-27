@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-select outlined :value="levelId" @change="handleEventSelection" :items="levels"/>
+        <v-select outlined :value="levelId" @change="handleLevelSelection" :items="levels"/>
         <span>Selected: {{ event && event.name }}</span>
     </div>
 </template>

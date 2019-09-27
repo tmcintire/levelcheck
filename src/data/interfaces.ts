@@ -12,7 +12,7 @@ export interface IUser {
   role: string;
   levelCheckTutorial: boolean;
   adminTutorial: boolean;
-  events: string[];
+  events: IUserEvents;
   id: string;
 }
 
@@ -24,12 +24,7 @@ export interface IEvent {
 }
 
 export interface IUserEvents {
-  [id: string]: IUserEvent;
-}
-
-export interface IUserEvent {
-  name: string;
-  id?: string;
+  [id: string]: boolean;
 }
 
 export interface IEventLevels {

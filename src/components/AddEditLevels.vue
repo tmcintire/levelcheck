@@ -37,7 +37,7 @@ import { v4 as uuid } from 'uuid';
     }),
 })
 export default class AddEditParticipant extends Vue {
-    @Prop() public levels: ILevel;
+    public levels!: ILevel; // defined as a prop already
 
     public selectedLevel: ILevel = null;
     public selectedLevelId: string = null;
@@ -49,8 +49,6 @@ export default class AddEditParticipant extends Vue {
 
     /** Create a blank level and set its order to the number of levels we currently have */
     public newLevel() {
-
-
         this.selectedLevel = {
             name: '',
             levelCheck: false,

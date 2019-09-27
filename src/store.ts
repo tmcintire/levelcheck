@@ -42,7 +42,7 @@ export const store = new Vuex.Store<IApplicationState>({
       if (payload.key) {
         state.selectedEvent[payload.property][payload.key][payload.field] = payload.value;
       } else {
-        state.selectedEvent[payload.field] = payload.value;
+        state.selectedEvent[payload.property] = payload.value;
       }
     },
     setSelectedEvent(state, payload: IEvent) {
