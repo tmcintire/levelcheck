@@ -20,17 +20,19 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import * as _ from 'lodash';
-import { ILevel } from '../data/interfaces';
+import { ILevel, IEventLevels } from '../data/interfaces';
 import { addEditLevel, addEditParticipant } from '../data/api';
 
 @Component
 export default class AddEditLevel extends Vue {
     @Prop() public selectedLevel: ILevel;
+    @Prop() public selectedLevelId: string;
     @Prop() public eventId: string;
+    @Prop() public levels: IEventLevels;
 
     public name: string = '';
     public levelCheck: boolean = false;
-    public id: string = '';
+    public order: number = 0;
 
     public onSubmit(e: Event) {
         e.preventDefault();
@@ -38,23 +40,22 @@ export default class AddEditLevel extends Vue {
         const level: ILevel = {
             name: this.name,
             levelCheck: this.levelCheck,
-            id: this.id,
+            order: this.order,
         };
         this.$emit('close');
 
-        addEditLevel(this.eventId, level, this.id);
+        addEditLevel(this.eventId, level, this.selectedLevelId);
     }
 
     public onDelete(e: Event) {
         e.preventDefault();
 
-        addEditLevel(this.eventId, null, this.id);
+        addEditLevel(this.eventId, null, this.selectedLevelId);
     }
 
     public onReset() {
         this.name = '';
         this.levelCheck = false;
-        this.id = '';
     }
 
     @Watch('selectedLevel', { immediate: true })
@@ -62,7 +63,7 @@ export default class AddEditLevel extends Vue {
         if (level) {
             this.name = level.name;
             this.levelCheck = level.levelCheck;
-            this.id = level.id;
+            this.order = level.order;
         }
     }
 }

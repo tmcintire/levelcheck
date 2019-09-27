@@ -1,25 +1,39 @@
 <template>
     <v-form>
         <h3 class="flex-row flex-center">Level Info</h3>
-        <div class="flex-row" v-for="level in levels" :key="level.id" >
+        <div class="flex-row" v-for="(level, key) in levels" :key="key">
             <v-text-field 
                 :label="'Name'" 
-                v-on:input="$emit('updateField', {property: 'levels', field: 'name', value: $event, key: level.id})"/>
+                :value="level.name"
+                v-on:input="updateSelectedEvent({property: 'levels', field: 'name', value: $event, key})"/>
             <div class="flex-col flex-center">
                 <span>Level Check</span>
-                <v-checkbox class="no-margin" v-on:change="$emit('updateField', {property: 'levels', field: 'levelCheck', value: $event, key: level.id})"></v-checkbox>
+                <v-checkbox class="no-margin" v-on:change="updateSelectedEvent({property: 'levels', field: 'levelCheck', value: $event, key})"></v-checkbox>
             </div>
         </div>
-        <v-btn @click="$emit('newLevel')">+</v-btn>
+        <v-btn @click="addNewLevel">+</v-btn>
     </v-form>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { IEventLevels } from '@/data/interfaces';
+import uuid from 'uuid';
+import { store, IParticipantState } from '../../store';
+import { mapState } from 'vuex';
 
-@Component
+@Component({
+    computed: mapState({
+        levels: (state: IParticipantState) => state.selectedEvent.levels,
+    }),
+})
 export default class LevelInfo extends Vue {
-    @Prop() public levels: IEventLevels;
+    public addNewLevel() {
+      store.commit('addNewLevel');
+    }
+
+    public updateSelectedEvent(payload) {
+        store.commit('updateSelectedEvent', payload);
+    }
 }
 </script>

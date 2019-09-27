@@ -10,43 +10,46 @@
         </div>
         <b-button type="submit" variant="primary" @click="newEvent">New Event</b-button>
         <v-overlay opacity="0.90" :value="selectedEvent">
-            <AddEditEvent :selectedEvent="selectedEvent" :eventId="eventId" v-on:close="onClose"/>
+            <AddEditEvent v-on:close="onClose" />
         </v-overlay>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ILevel } from '@/data/interfaces';
+import { ILevel, IEvent, IUserEvent } from '@/data/interfaces';
 import AddEditEvent from '@/components/AddEditEvent/AddEditEvent.vue'; // @ is an alias to /src;
 import { mapState } from 'vuex';
 import { v4 as uuid } from 'uuid';
-import { IParticipantState } from '@/store';
+import { store } from '../../store';
+import { setSelectedEventDetails } from '../../data/api';
 
 @Component({
     components: {
         AddEditEvent,
     },
-    computed: mapState(['userEvents']),
+    computed: mapState(['userEvents', 'selectedEvent']),
 })
 export default class AddEditEvents extends Vue {
-    public selectedEvent: ILevel = null;
 
-    public selectEvent(event: ILevel, key: string) {
-        this.selectedEvent = event;
+    public selectEvent(event: IUserEvent, key: string) {
+        setSelectedEventDetails(event.id);
     }
 
     public newEvent() {
         const id = uuid();
-        this.selectedEvent = {
+        const newSelectedEvent = {
             name: '',
-            levelCheck: false,
-            id,
+            participants: null,
+            levels: null,
+            eventId: id,
         };
+
+        store.commit('setSelectedEvent', newSelectedEvent);
     }
 
     public onClose() {
-        this.selectedEvent = null;
+        store.commit('setSelectedEvent', null);
     }
 }
 </script>

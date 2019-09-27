@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
-import { IParticipant, IUser, IEvent, IUserEvent } from './data/interfaces';
+import { IParticipant, IUser, IEvent, IUserEvent, ILevel, TVP } from './data/interfaces';
 import * as registrations from './registrations.json';
 import { getLevelsFromRegistrations } from './helpers';
+import uuid from 'uuid';
+import { isContext } from 'vm';
 
 Vue.use(Vuex);
 
@@ -11,7 +13,9 @@ export interface IParticipantState {
   levels: string[];
   user: IUser;
   event: IEvent;
-  userEvents: IUserEvent[];
+  userEvents: TVP[];
+  selectedEvent: IEvent;
+  levelCheckLevel: string;
 }
 
 export const store = new Vuex.Store<IParticipantState>({
@@ -21,6 +25,8 @@ export const store = new Vuex.Store<IParticipantState>({
     user: null,
     event: null,
     userEvents: null,
+    selectedEvent: null,
+    levelCheckLevel: '',
   },
   mutations: {
     add(state, payload) {
@@ -41,8 +47,31 @@ export const store = new Vuex.Store<IParticipantState>({
     setEvent(state, payload) {
       state.event = payload;
     },
-    setUserEvents(state, payload) {
+    setUserEvents(state, payload: TVP[]) {
+      // need a blank value
       state.userEvents = payload;
+    },
+    updateSelectedEvent(state, payload: {property: any, field: any, value: any, key?: any}) {
+      if (payload.key) {
+        state.selectedEvent[payload.property][payload.key][payload.field] = payload.value;
+      } else {
+        state.selectedEvent[payload.field] = payload.value;
+      }
+    },
+    setSelectedEvent(state, payload: IEvent) {
+      state.selectedEvent = payload;
+    },
+    addNewLevel(state) {
+      const levelId = uuid();
+      state.selectedEvent.levels = { ...state.selectedEvent.levels,
+        [levelId]: {
+          name: '',
+          levelCheck: false,
+          order: Object.keys(state.selectedEvent.levels).length,
+      }};
+    },
+    setLevelCheckLevel(state, payload) {
+      state.levelCheckLevel = payload;
     },
   },
   actions: {
@@ -64,8 +93,20 @@ export const store = new Vuex.Store<IParticipantState>({
     setEvent(context, payload) {
       context.commit('setEvent', payload);
     },
-    setUserEvents(context, payload) {
+    setUserEvents(context, payload: TVP[]) {
       context.commit('setUserEvents', payload);
+    },
+    updateSelectedEvent(context, payload) {
+      context.commit('updateSelectedEvent', payload);
+    },
+    setSelectedEvent(context, payload: IEvent) {
+      context.commit('setSelectedEvent', payload);
+    },
+    addNewLevel(context, payload: ILevel) {
+      context.commit('addNewLevel');
+    },
+    setLevelCheckLevel(context, payload) {
+      context.commit('setLevelCheckLevel', payload);
     },
   },
   getters: {

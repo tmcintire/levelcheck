@@ -23,14 +23,14 @@
             <v-list-item-title>My Events</v-list-item-title>
           </template>
           <v-list-item-content>
-            <v-list-item v-for="ev in userEvents" :key="ev.id" :class="event && ev.id === event.eventId ? 'active' : ''">
-              <v-list-item-title @click="handleEventSelection(ev.id)">{{ev.name}}</v-list-item-title>
+            <v-list-item v-for="ev in userEvents" :key="ev.value" :class="event && ev.value === event.eventId ? 'active' : ''">
+              <v-list-item-title @click="handleEventSelection(ev.value)">{{ev.text}}</v-list-item-title>
             </v-list-item>
           </v-list-item-content>
         </v-list-group>
 
 
-        <v-list-item @click="navigate('registrations')">
+        <v-list-item v-if="event" @click="navigate('registrations')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -38,7 +38,7 @@
             <v-list-item-title>Registrations</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="navigate('levelcheck')">
+        <v-list-item v-if="event" @click="navigate('levelcheck')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>

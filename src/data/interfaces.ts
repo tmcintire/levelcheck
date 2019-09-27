@@ -39,7 +39,11 @@ export interface IEventLevels {
 export interface ILevel {
   name: string;
   levelCheck: boolean;
-  id?: string;
+  order: number;
+}
+export interface TVP {
+  text: string;
+  value: string;
 }
 
 

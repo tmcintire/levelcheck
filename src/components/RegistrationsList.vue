@@ -2,8 +2,8 @@
   <div v-if="participants" class="registrations">
         <div 
             class="flex-row hover" 
-            v-for="(participant, index) in participants" 
-            :key="index" 
+            v-for="(participant, key) in participants" 
+            :key="key" 
             @click="$emit('participantSelected', {participant, id: index})"
             :class="selectedParticipant && selectedParticipant.id === participant.id ? 'active' : ''"
             >

@@ -1,7 +1,11 @@
 <template>
     <div v-if="userEvents">
         <h3>Please select the event with which you'd like to work: </h3>
-        <v-select outlined :value="eventId" @change="handleEventSelection" :items="userEvents"/>
+        <v-select outlined :value="eventId" @change="handleEventSelection" :items="userEvents">
+            <option v-for="event in userEvents" v-bind:value="event.id" :key="event.id">
+                {{ event.name }}
+            </option>
+        </v-select>
         <span>Selected: {{ event && event.name }}</span>
     </div>
     <div v-else class="flex-row flex-center"> 

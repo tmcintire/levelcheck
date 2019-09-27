@@ -1,16 +1,16 @@
 <template>
     <div>
         <div 
-            v-for="(level, key) in levels"
-            :key="key" 
-            @click="selectLevel(level, key)"
+            v-for="level in levels"
+            :key="level.id" 
+            @click="selectLevel(level, level.id)"
             class="flex-row hover"
             :class="selectedLevel === level ? 'active' : ''">
             {{level.name}} - {{level.levelCheck ? "Level Check" : "No Level Check"}}
         </div>
         <b-button type="submit" variant="primary" @click="newLevel">New Level</b-button>
         <v-overlay opacity="0.90" :value="selectedLevel">
-            <AddEditLevel :selectedLevel="selectedLevel" :eventId="eventId" v-on:close="onClose"/>
+            <AddEditLevel :selectedLevel="selectedLevel" :selectedLevelId="selectedLevelId" :eventId="eventId" :levels="levels" v-on:close="onClose"/>
         </v-overlay>
     </div>
 </template>
@@ -28,28 +28,41 @@ import { IParticipantState } from '../store';
         AddEditLevel,
     },
     computed: mapState({
-        levels: (state: IParticipantState) => state.event.levels,
+        levels: (state: IParticipantState) => {
+            return Object.entries(state.event.levels).map((level: [string, ILevel]) => {
+                return {...level[1], id: level[0]};
+            }).sort((a, b) => a.order - b.order);
+
+        },
         eventId: (state: IParticipantState) => state.event.eventId,
     }),
 })
 export default class AddEditParticipant extends Vue {
+    @Prop() public levels: ILevel;
+
     public selectedLevel: ILevel = null;
+    public selectedLevelId: string = null;
 
     public selectLevel(level: ILevel, key: string) {
         this.selectedLevel = level;
+        this.selectedLevelId = key;
     }
 
+    /** Create a blank level and set its order to the number of levels we currently have */
     public newLevel() {
-        const id = uuid();
+
+
         this.selectedLevel = {
             name: '',
             levelCheck: false,
-            id,
+            order: Object.keys(this.levels).length,
         };
+        this.selectedLevelId = uuid();
     }
 
     public onClose() {
         this.selectedLevel = null;
+        this.selectedLevelId = null;
     }
 }
 </script>

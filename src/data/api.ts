@@ -3,7 +3,7 @@ import { firestore } from 'firebase-admin';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { store } from '@/store';
-import { IEvent, IUserEvent, IParticipant, ILevel, IUserEvents } from './interfaces';
+import { IEvent, IUserEvent, IParticipant, ILevel, IUserEvents, TVP } from './interfaces';
 import { __values } from 'tslib';
 
 /** Takes in an eventId and sets that events details to the main state active event */
@@ -23,6 +23,21 @@ export const setEventDetails = async (eventId: string) => {
     }
 };
 
+export const setSelectedEventDetails = (eventId: string) => {
+    if (eventId) {
+        firebaseRef.collection('events').doc(eventId).onSnapshot((snapshot) => {
+            const event = snapshot.data() as IEvent;
+
+            if (event) {
+                event.eventId = eventId;
+                store.dispatch('setSelectedEvent', event);
+            }
+        });
+    } else {
+        store.dispatch('setSelectedEvent', null);
+    }
+};
+
 /** Fetch all of the users events and set them to a selection box for them to select the active event */
 export const getUserEvents = (userId: string) => {
     firebaseRef.collection('users').doc(userId).onSnapshot((snapshot) => {
@@ -30,13 +45,13 @@ export const getUserEvents = (userId: string) => {
         if (fbUser.events) {
             console.log('Fetched users events', fbUser.events);
 
-            const userEvents: IUserEvent[] = [];
+            const userEvents: TVP[] = [];
 
-            _.forEach(fbUser.events, (ev, key) => {
+            _.forEach(fbUser.events, (ev) => {
                 eventDetails(ev).then((event: IEvent) => {
                     userEvents.push({
-                        name: event.name,
-                        id: ev,
+                        text: event.name,
+                        value: ev,
                     });
 
                     if (userEvents.length === Object.keys(fbUser.events).length) {
