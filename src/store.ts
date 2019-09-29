@@ -40,7 +40,11 @@ export const store = new Vuex.Store<IApplicationState>({
       // need a blank value
       state.userEvents = payload;
     },
-    updateSelectedEvent(state, payload: {property: any, value: any, field?: any, key?: any}) {
+    updateSelectedEvent(state, payload: {property: any, value: any, type?: string, field?: any, key?: any}) {
+      if (payload.type === 'number') {
+        payload.value = parseInt(payload.value, 10);
+      }
+
       if (payload.key && payload.field) {
         // This is a nested collection with key value pairs
         state.selectedEvent[payload.property][payload.key][payload.field] = payload.value;

@@ -21,15 +21,17 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import vuescroll from 'vue-scrollto';
 import * as _ from 'lodash';
-import { IParticipant } from '../../data/interfaces';
+import { IParticipant, IApplicationState } from '../../data/interfaces';
+import { mapState } from 'vuex';
 
 @Component({
-    computed: {
-        collection: function () {
+    computed: mapState({
+
+        collection: function(state: IApplicationState) {
             let currentNumber = this.$props.filteredParticipants[0].bib;
             const lastNumber = this.$props.filteredParticipants[this.$props.filteredParticipants.length-1].bib;
 
-            const pageSize=25;
+            const pageSize=state.event.config.pageSize;
             let coll: {first: number, last: number}[] = [];
             let totalNumber = lastNumber;
             while (currentNumber < lastNumber) {
@@ -61,7 +63,7 @@ import { IParticipant } from '../../data/interfaces';
 
             return coll;
         },
-    },
+    }),
 })
 export default class NumbersBar extends Vue {
     @Prop() public filteredParticipants: IParticipant[];
