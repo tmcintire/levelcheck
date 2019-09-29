@@ -1,7 +1,6 @@
 <template>
     <div>
-        <v-select outlined :value="levelId" @change="handleLevelSelection" :items="levels"/>
-        <span>Selected: {{ event && event.name }}</span>
+        <v-select :value="level" :label="'Level'" outlined @change="handleLevelSelection" :items="levels"/>
     </div>
 </template>
 
@@ -18,15 +17,19 @@ import { ILevel, IEventLevels, IApplicationState } from '../data/interfaces';
             }).map((l: [string, ILevel]) => {
                 return ({
                         text: l[1].name,
-                        value: l,
+                        value: {
+                            levelId: l[0],
+                            level: l[1]
+                        },
                     });
             });
         },
+        level: (state: IApplicationState) => state.levelCheckLevel,
     }),
 })
 export default class LevelSelector extends Vue {
     /** fetch the event details from firebase and set it to the store when the user makes this selection */
-    private handleLevelSelection(selection: string) {
+    private handleLevelSelection(selection: [string, ILevel]) {
         this.$store.dispatch('setLevelCheckLevel', selection);
     }
 }

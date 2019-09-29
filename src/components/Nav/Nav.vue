@@ -23,8 +23,8 @@
             <v-list-item-title>My Events</v-list-item-title>
           </template>
           <v-list-item-content>
-            <v-list-item v-for="ev in userEvents" :key="ev.value" :class="event && ev.value === event.eventId ? 'active' : ''">
-              <v-list-item-title @click="handleEventSelection(ev.value)">{{ev.text}}</v-list-item-title>
+            <v-list-item @click="handleEventSelection(ev.value)" v-for="ev in userEvents" :key="ev.value" :class="event && ev.value === event.eventId ? 'active' : ''">
+              <v-list-item-title >{{ev.text}}</v-list-item-title>
             </v-list-item>
           </v-list-item-content>
         </v-list-group>

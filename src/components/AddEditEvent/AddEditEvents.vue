@@ -9,9 +9,9 @@
             {{ev.text}}
         </div>
         <b-button type="submit" variant="primary" @click="newEvent">New Event</b-button>
-        <v-overlay opacity="0.90" :value="selectedEvent">
+        <v-dialog v-if="selectedEvent" width="600px" max-width="700px" :value="selectedEvent">
             <AddEditEvent v-on:close="onClose" />
-        </v-overlay>
+        </v-dialog>
     </div>
 </template>
 
@@ -46,6 +46,10 @@ export default class AddEditEvents extends Vue {
                 },
             },
             newEvent: true,
+            config: {
+                pageSize: 0,
+                numBar: 0,
+            }
         };
 
         this.$store.commit('setSelectedEvent', newSelectedEvent);

@@ -5,10 +5,15 @@
             <v-text-field 
                 :label="'Name'" 
                 :value="level.name"
-                v-on:input="updateSelectedEvent({property: 'levels', field: 'name', value: $event, key: level.id})"/>
+                v-on:input="updateSelectedEvent({property: 'levels', value: $event, field: 'name', key: level.id})">
+            </v-text-field>
             <div class="flex-col flex-center">
                 <span>Level Check</span>
-                <v-checkbox class="no-margin" v-model="level.levelCheck" v-on:change="updateSelectedEvent({property: 'levels', field: 'levelCheck', value: $event, key: level.id})"></v-checkbox>
+                <v-checkbox 
+                    class="no-margin" 
+                    v-model="level.levelCheck" 
+                    v-on:change="updateSelectedEvent({property: 'levels', value: $event, field: 'levelCheck', key: level.id})">
+                </v-checkbox>
             </div>
         </div>
         <v-btn @click="addNewLevel">+</v-btn>
@@ -16,21 +21,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { IEventLevels, IApplicationState, ILevel } from '@/data/interfaces';
-import uuid from 'uuid';
-import { mapState } from 'vuex';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { ILevel } from '@/data/interfaces';
 
-@Component({
-    computed: mapState({
-        levels: (state: IApplicationState) => {
-             return Object.entries(state.selectedEvent.levels).map((level: [string, ILevel]) => {
-                return {...level[1], id: level[0]};
-            }).sort((a, b) => a.order - b.order);
-        },
-    }),
-})
+@Component
 export default class LevelInfo extends Vue {
+    @Prop() levels: ILevel;
+
     public addNewLevel() {
       this.$store.commit('addNewLevel');
     }

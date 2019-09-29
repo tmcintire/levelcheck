@@ -4,8 +4,8 @@
             class="flex-row hover" 
             v-for="(participant, key) in participants" 
             :key="key" 
-            @click="$emit('participantSelected', {participant, id: index})"
-            :class="selectedParticipant && selectedParticipant.id === participant.id ? 'active' : ''"
+            @click="$emit('participantSelected', {participant, id: key})"
+            :class="selectedParticipant && selectedParticipant.id === key ? 'active' : ''"
             >
             <span>
             {{participant.name}} {{participant.bib}} - {{participant.originalLevel}} 

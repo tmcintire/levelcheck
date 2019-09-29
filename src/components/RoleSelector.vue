@@ -1,35 +1,32 @@
 <template>
-    <div v-if="userEvents">
-        <h3>Please select the event with which you'd like to work: </h3>
-        <v-select outlined :value="eventId" @change="handleEventSelection" :items="userEvents">
-            <option v-for="event in userEvents" v-bind:value="event.id" :key="event.id">
-                {{ event.name }}
-            </option>
+    <div>
+        <v-select :value="role" :label="'Role'" outlined @change="handleRoleSelection" :items="roles">
         </v-select>
-        <span>Selected: {{ event && event.name }}</span>
-    </div>
-    <div v-else class="flex-row flex-center"> 
-        <span class="loader" />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { mapState } from 'vuex';
+import * as _ from 'lodash';
 import { setEventDetails } from '../data/api';
-import { IEvent, TVP, IApplicationState } from '../data/interfaces';
+import { IEvent, TVP, IApplicationState, IParticipant } from '../data/interfaces';
 
 @Component({
     computed: mapState({
-        userEvents: (state: IApplicationState) => state.userEvents,
-        event: (state: IApplicationState) => state.event,
-        eventId: (state: IApplicationState) => state.event ? state.event.eventId : '',
+        roles: (state: IApplicationState) => {
+           const allRoles = Object.entries(state.event.participants).map(p => p[1].role);
+           const uniqueRoles = _.uniq(allRoles);
+           return uniqueRoles;
+        },
+        role: (state: IApplicationState) => state.levelCheckRole,
     }),
 })
 export default class EventSelector extends Vue {
     /** fetch the event details from firebase and set it to the store when the user makes this selection */
-    private handleEventSelection(selection: string) {
-        setEventDetails(selection);
+     /** fetch the event details from firebase and set it to the store when the user makes this selection */
+    private handleRoleSelection(role: string) {
+        this.$store.dispatch('setLevelCheckRole', role);
     }
 }
 </script>

@@ -46,7 +46,6 @@ export default class AddEditParticipants extends Vue {
         bib: 0,
         finalLevel: '',
         originalLevel: '',
-        id: uuid(),
         role: '',
       };
     }

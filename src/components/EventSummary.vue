@@ -14,7 +14,7 @@ import { mapState } from 'vuex';
 @Component({
     computed: mapState({
       event: (state: IApplicationState) => state.event,
-      participantsCount: (state: IApplicationState) => Object.keys(state.event.participants).length,
+      participantsCount: (state: IApplicationState) => state.event.participants && Object.keys(state.event.participants).length,
     }),
 })
 export default class EventSummary extends Vue {

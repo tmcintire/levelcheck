@@ -22,5 +22,5 @@ try {
 }
 
 
-export const firebaseRef = firebase.firestore();
+export const firebaseRef = firebase.database().ref();
 export default firebase;

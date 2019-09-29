@@ -3,7 +3,7 @@
     <Nav />
 
     <v-content>
-      <v-container>
+      <v-container class="main-wrapper">
         <router-view/>
       </v-container>
     </v-content>

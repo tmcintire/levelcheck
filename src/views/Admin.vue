@@ -1,5 +1,5 @@
 <template>
-  <div class="admin container">
+  <div class="admin container flex-col flex-grow">
     <h1 class="flex-row flex-center">Administrator</h1>
     <v-tabs fixed-tabs>
       <v-tab @click="navigate('/admin/participants')">Participants</v-tab>

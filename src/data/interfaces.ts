@@ -5,6 +5,8 @@ export interface IParticipant {
     id?: string;
     bib: number;
     role: string;
+    levelChecked?: boolean;
+    confirmed?: boolean;
 }
 
 export interface IUser {
@@ -16,12 +18,14 @@ export interface IUser {
   id: string;
 }
 
+
 export interface IEvent {
   name: string;
   levels: IEventLevels;
   participants: IParticipant;
   eventId: string;
   newEvent: boolean;
+  config: IConfig;
 }
 
 export interface IUserEvents {
@@ -42,6 +46,16 @@ export interface TVP {
   value: string;
 }
 
+export interface IConfig {
+  [property: string]: any;
+}
+
+export interface IChanges {
+  field: any;
+  id: any;
+  oldValue: any;
+}
+
 export interface IApplicationState {
   registrations: IParticipant[];
   levels: string[];
@@ -49,6 +63,11 @@ export interface IApplicationState {
   event: IEvent;
   userEvents: TVP[];
   selectedEvent: IEvent;
-  levelCheckLevel: string;
+  levelCheckLevel: {
+    levelId: string,
+    level: ILevel,
+  };
+  levelCheckRole: string;
+  undoChangeState: IChanges[];
 }
 

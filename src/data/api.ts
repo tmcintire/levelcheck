@@ -3,14 +3,14 @@ import { firestore } from 'firebase-admin';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { store } from '@/store';
-import { IEvent, IParticipant, ILevel, TVP, IUser } from './interfaces';
+import { IEvent, IParticipant, ILevel, TVP, IUser, IChanges } from './interfaces';
 import { __values } from 'tslib';
 
 /** Takes in an eventId and sets that events details to the main state active event */
 export const setEventDetails = async (eventId: string) => {
     if (eventId) {
-        firebaseRef.collection('events').doc(eventId).onSnapshot((snapshot) => {
-            const event = snapshot.data() as IEvent;
+        firebaseRef.child('events').child(eventId).on('value', (snapshot) => {
+            const event = snapshot.val() as IEvent;
 
             if (event) {
                 console.log(`Event "${event.name}" has been updated`, event);
@@ -25,8 +25,8 @@ export const setEventDetails = async (eventId: string) => {
 
 export const setSelectedEventDetails = (eventId: string) => {
     if (eventId) {
-        firebaseRef.collection('events').doc(eventId).onSnapshot((snapshot) => {
-            const event = snapshot.data() as IEvent;
+        firebaseRef.child('events').child(eventId).on('value', (snapshot) => {
+            const event = snapshot.val() as IEvent;
 
             if (event) {
                 event.eventId = eventId;
@@ -41,8 +41,8 @@ export const setSelectedEventDetails = (eventId: string) => {
 
 /** Fetch all of the users events and set them to a selection box for them to select the active event */
 export const getUserEvents = (userId: string) => {
-    firebaseRef.collection('users').doc(userId).onSnapshot((snapshot) => {
-        const fbUser: IUser = snapshot.data() as IUser;
+    firebaseRef.child('users').child(userId).on('value', (snapshot) => {
+        const fbUser: IUser = snapshot.val() as IUser;
         if (fbUser.events) {
             console.log('Fetched users events', fbUser.events);
 
@@ -65,8 +65,8 @@ export const getUserEvents = (userId: string) => {
 };
 
 export const eventDetails = (eventId: string): Promise<IEvent> => new Promise((resolve, reject) => {
-    firebaseRef.collection('events').doc(eventId).get().then((snapshot) => {
-        const event = snapshot.data() as IEvent;
+    firebaseRef.child('events').child(eventId).on('value', (snapshot) => {
+        const event = snapshot.val() as IEvent;
 
         if (event) {
             console.log('Found event', event);
@@ -80,40 +80,47 @@ export const eventDetails = (eventId: string): Promise<IEvent> => new Promise((r
 // tslint:disable-next-line: max-line-length
 export const addParticipant = (eventId: string, participant: IParticipant, nextNumber: number) => new Promise((resolve, reject) => {
     // tslint:disable-next-line: max-line-length
-    firebaseRef.collection('events').doc(eventId).set({participants: {[nextNumber]: participant}}, {merge: true}).then(() => {
+    const eventRef = firebaseRef.child('events').child(eventId);
+    const key = eventRef.child('participants').push().key;
+    firebaseRef.child('events').child(eventId).child('participants').child(key).set(participant).then(() => {
         resolve();
     });
 });
 
 export const addEditLevel = (eventId: string, level: ILevel, levelId?: string) => {
-    if (level) {
-        firebaseRef.collection('events').doc(eventId).set({
-            levels: {
-                [levelId ? levelId : uuid()]: level,
-            },
-        }, { merge: true });
-    } else {
-        const updates: any = {};
-        updates[`levels.${levelId}`] = firestore.FieldValue.delete();
-        console.log(updates);
-        firebaseRef.collection('events').doc(eventId).update(updates);
+    const eventRef = firebaseRef.child('events').child(eventId);
+    let key = levelId;
+
+    if (!key) {
+        key = eventRef.child('participants').push().key;
     }
 
+    eventRef.child('levels').child(key).set(level);
 };
 
-export const addEditParticipant = (eventId: string, participant: IParticipant, participantId?: string) => {
-    firebaseRef.collection('events').doc(eventId).set({
-        participants: {
-            [participantId ? participantId : uuid()]: participant,
-        },
-    }, { merge: true });
+export const addEditParticipant = (participant: IParticipant, participantId?: string) => {
+    const eventId = store.getters.event.eventId;
+    const eventRef = firebaseRef.child('events').child(eventId);
+    let key = participantId;
+    if (!key) {
+        // New participant
+        // Add some default values for a new participant
+        participant = {
+            ...participant,
+            levelChecked: false,
+            confirmed: false,
+        };
+        key = eventRef.child('participants').push().key;
+    }
+
+    eventRef.child('participants').child(key).set(participant);
 };
 
 export const skipTutorial = (tutorialValue: string, value: boolean) => new Promise((resolve, reject) => {
     const userid = store.getters.user.id;
     console.log(store.getters.user);
     if (userid) {
-        firebaseRef.collection('users').doc(userid).update({
+        firebaseRef.child('users').child(userid).update({
            [tutorialValue]: value,
         }).then(() => resolve());
     }
@@ -122,20 +129,28 @@ export const skipTutorial = (tutorialValue: string, value: boolean) => new Promi
 export const addEditEvent = (event: IEvent) => new Promise((resolve, reject) => {
     if (store.getters.selectedEvent.newEvent) {
         // This is a new event
-        const newId = uuid();
-        firebaseRef.collection('events').doc(newId).set(event).then(() => {
+        const key = firebaseRef.child('events').push().key;
+        firebaseRef.child('events').child(key).set(event).then(() => {
             const userid = store.getters.user.id;
-            firebaseRef.collection('users').doc(userid).set({
-                events: {
-                    [newId]: true,
-                },
-            }, {merge: true}).then(() => resolve());
+            firebaseRef.child('users').child(userid).child('events').update({
+                [key]: true,
+            }).then(() => resolve());
         });
     } else {
-        firebaseRef.collection('events').doc(event.eventId).set(event, {merge: true}).then(() => {
+        firebaseRef.child('events').child(event.eventId).set(event).then(() => {
             resolve();
         });
     }
 });
+
+export const fireUndoNotification = (participant: IParticipant) => {
+    const change: IChanges = {
+        oldValue: participant,
+        id: participant.id,
+        field: 'participants',
+    };
+    store.dispatch('addChange', change);
+};
+
 
 

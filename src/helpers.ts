@@ -1,4 +1,4 @@
-import { IParticipant } from './data/interfaces';
+import { IParticipant, IEventLevels, ILevel } from './data/interfaces';
 import _ from 'lodash';
 
 /* Look through the registrations and find the unique levels and return it as a string array */
@@ -18,4 +18,12 @@ export const getNextId = (registrations: IParticipant[]): string => {
     }
 
     return (maxId + 1).toString();
+};
+
+export const sortlevels = (levels: IEventLevels): ILevel[] => {
+    // Sort levels based on
+    const levelsArray = Object.entries(levels).map(p => p[1]);
+    const sortedLevels = levelsArray.sort((a, b) => a.order - b.order);
+
+    return sortedLevels;
 };

@@ -9,7 +9,7 @@
         <b-form @submit="onSubmit" @reset="onReset">
             <b-form-input class="form-input" v-model="name" placeholder="Name"></b-form-input>
             <b-form-input type="number" class="form-input" v-model="bib" placeholder="Bib Number"></b-form-input>
-            <b-form-input type="number" class="form-input" v-model="role" placeholder="Bib Number"></b-form-input>
+            <b-form-input class="form-input" v-model="role" placeholder="Role"></b-form-input>
             <b-form-select class="form-input" v-model="originalLevel" :options="levelOptions"></b-form-select>
             <b-form-select class="form-input" v-model="finalLevel" :options="levelOptions"></b-form-select>
 

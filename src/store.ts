@@ -13,7 +13,9 @@ export const store = new Vuex.Store<IApplicationState>({
     event: null,
     userEvents: null,
     selectedEvent: null,
-    levelCheckLevel: '',
+    levelCheckLevel: null,
+    levelCheckRole: null,
+    undoChangeState: [],
   },
   mutations: {
     add(state, payload) {
@@ -38,10 +40,15 @@ export const store = new Vuex.Store<IApplicationState>({
       // need a blank value
       state.userEvents = payload;
     },
-    updateSelectedEvent(state, payload: {property: any, field: any, value: any, key?: any}) {
-      if (payload.key) {
+    updateSelectedEvent(state, payload: {property: any, value: any, field?: any, key?: any}) {
+      if (payload.key && payload.field) {
+        // This is a nested collection with key value pairs
         state.selectedEvent[payload.property][payload.key][payload.field] = payload.value;
+      } else if (payload.field && !payload.key) {
+        // This is just a field, inside of a field, lets update it
+        state.selectedEvent[payload.property][payload.field] = payload.value;
       } else {
+        // A single nested field on the event
         state.selectedEvent[payload.property] = payload.value;
       }
     },
@@ -59,6 +66,12 @@ export const store = new Vuex.Store<IApplicationState>({
     },
     setLevelCheckLevel(state, payload) {
       state.levelCheckLevel = payload;
+    },
+    setLevelCheckRole(state, payload) {
+      state.levelCheckRole = payload;
+    },
+    addChange(state, payload) {
+      state.undoChangeState.push(payload);
     },
   },
   actions: {
@@ -95,6 +108,12 @@ export const store = new Vuex.Store<IApplicationState>({
     setLevelCheckLevel(context, payload) {
       context.commit('setLevelCheckLevel', payload);
     },
+    setLevelCheckRole(context, payload) {
+      context.commit('setLevelCheckRole', payload);
+    },
+    addChange(context, payload) {
+      context.commit('addChange', payload);
+    },
   },
   getters: {
     user: (state: IApplicationState): IUser => {
@@ -102,6 +121,9 @@ export const store = new Vuex.Store<IApplicationState>({
     },
     selectedEvent: (state: IApplicationState): IEvent => {
       return state.selectedEvent;
+    },
+    event: (state: IApplicationState): IEvent => {
+      return state.event;
     },
   },
 });
