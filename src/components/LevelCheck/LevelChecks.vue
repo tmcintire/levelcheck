@@ -1,35 +1,38 @@
 <template>
-    <div class="level-checks flex-grow">
-        <router-link to="/levelcheck/changes">Undo Changes</router-link>
-        <LevelCheckSelectors 
-            :levels="filteredLevels" 
-            :roles="roles"
-        />
-        <div v-if="filteredParticipants" class="level-check-container flex-row flex-grow">
-            <NumbersBar
-                v-if="filteredParticipants.length > 5"
-                :filteredParticipants="filteredParticipants"
+    <v-container class="level-checks">
+        <v-col>
+            <router-link to="/levelcheck/changes">Undo Changes</router-link>
+            <LevelCheckSelectors 
+                :levels="filteredLevels" 
+                :roles="roles"
             />
-            <LevelCheckList
+            <v-row v-if="filteredParticipants" class="level-check-container">
+                <NumbersBar
+                    v-if="filteredParticipants.length > 5"
+                    :filteredParticipants="filteredParticipants"
+                />
+                <LevelCheckList
+                    v-on:setParticipant="setParticipant"
+                    v-on:confirmLevel="confirmLevel"
+                    :filteredParticipants="filteredParticipants"
+                />
+            </v-row>
+
+            <ChangeLevel
+                :selectedParticipant="selectedParticipant"
+                :levels="allLevels"
                 v-on:setParticipant="setParticipant"
-                v-on:confirmLevel="confirmLevel"
-                :filteredParticipants="filteredParticipants"
             />
-        </div>
+        </v-col>
 
-        <ChangeLevel
-            :selectedParticipant="selectedParticipant"
-            :levels="allLevels"
-            v-on:setParticipant="setParticipant"
-        />
-
+        <!-- Toast for undo notifications -->
         <v-snackbar v-for="(change, index) in tempUndoChangeState" :key="index" color="cyan darken-2" v-model="change.showChange">
             Undo change to {{change.oldValue.name}}
             <v-btn text @click="undoChange(change, index)" >
                 Undo
             </v-btn>
         </v-snackbar>
-    </div>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -92,6 +95,24 @@ export default class LevelChecks extends Vue {
     private selectedParticipant: IParticipant = null;
     private showUndo: boolean = false;
 
+    private mounted() {
+        this.resizeView();
+        window.addEventListener('resize', this.resizeView);
+    }
+
+    // Handle the resizing of the list element so it always fits on the page
+    private resizeView() {
+        const el = document.getElementsByClassName('tabs-container');
+        if (el[0]) {
+            const rect  = el[0].getBoundingClientRect();
+            const levelContainer = document.getElementsByClassName('level-check-container');
+            if (levelContainer[0]) {
+                const cont: HTMLElement = levelContainer[0] as HTMLElement;
+                cont.style.height = window.innerHeight - 40 - rect.bottom + 'px';
+            }
+        }
+    }
+
     private undoChange(change: IChanges, index: number) {
         this.tempUndoChangeState.splice(index, 1);
  
@@ -110,7 +131,7 @@ export default class LevelChecks extends Vue {
             showChange: true,
         };
         this.tempUndoChangeState.push(change);
-        const index = this.tempUndoChangeState.length-1;
+        const index = this.tempUndoChangeState.length - 1;
 
         // After 5 seconds, remove the toast to undo the change, after this the user will have to go to
         // the changes page to undo this change
@@ -122,39 +143,23 @@ export default class LevelChecks extends Vue {
         participant = {
             ...participant,
             levelChecked: true,
-        }
+        };
         addEditParticipant(participant, participant.id);
     }
 }
 </script>
 
 <style lang="less">
-
     .main-wrapper {
-        height: calc(~"100vh - 100px");
-        position: relative;
-
-        .registrations {
-            height: 100%;
-
-            .level-checks {
-                height: 100%;
-            }
-        }
-
-        .level-check-container {
-            border: 1px solid silver;
-            border-radius: 5px;
-            box-shadow: 3px 0px 4px silver;
-            max-height: 87%;
-            min-height: 87%;
-        }
+            height: calc(~"100vh - 100px");
+            position: relative;
     }
 
-    .undo-toast {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        background: green;
+    .level-check-container {
+        border: 1px solid silver;
+        border-radius: 5px;
+        box-shadow: 3px 0px 4px silver;
+        padding: 2px 0px;
+        height: calc(~"100vh - 340px");
     }
 </style>

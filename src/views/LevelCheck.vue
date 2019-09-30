@@ -1,8 +1,10 @@
 <template>
-  <div v-if="event" class="registrations flex-col flex-grow">
-    <h1 class="flex-row flex-center">LevelCheck</h1>
+  <v-col v-if="event">
+    <v-row justify="center">
+      <h1>LevelCheck</h1>
+    </v-row>
     <router-view />
-  </div>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -16,13 +18,5 @@ import { IApplicationState } from '@/data/interfaces';
     event: (state: IApplicationState) => state.event,
   }),
 })
-export default class LevelCheck extends Vue {
-  
-}
+export default class LevelCheck extends Vue {}
 </script>
-
-<style lang="less">
-  .no-flex {
-    flex: 0
-  }
-</style>

@@ -75,6 +75,7 @@ export default class NumbersBar extends Vue {
     .level-check-pages {
         margin: 10px 10px;
         width: 90px;
+        height: 100%;
         overflow-y: scroll;
 
         .level-check-page-item {

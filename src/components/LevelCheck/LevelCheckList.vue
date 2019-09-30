@@ -1,5 +1,5 @@
 <template>
-    <div class="level-check-list flex-col flex-grow">
+    <v-col class="level-check-list">
         <v-card 
             class="mx-auto participant-card"
             :id="`lc-${participant.bib}`"
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </v-card>
-    </div>
+    </v-col>
 </template>
 
 <script lang="ts">
@@ -36,6 +36,7 @@ export default class LevelCheckList extends Vue {
     .level-check-list {
         margin-right: 10px;
         overflow-y: auto;
+        height: 100%;
 
         .participant-card {
             margin: 10px 0px;

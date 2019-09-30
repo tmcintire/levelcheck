@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-col class="tabs-container">
         <v-tabs v-if="levels" fixed-tabs class="no-flex" :value="selectedLevelIndex">
             <v-tab 
                 v-for="(level, index) in levels" 
@@ -16,7 +16,7 @@
                 {{role}}
             </v-tab>
         </v-tabs>
-    </div>
+    </v-col>
 </template>
 
 <script lang="ts">
