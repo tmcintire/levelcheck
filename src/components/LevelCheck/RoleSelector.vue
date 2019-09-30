@@ -9,8 +9,8 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { mapState } from 'vuex';
 import * as _ from 'lodash';
-import { setEventDetails } from '../data/api';
-import { IEvent, TVP, IApplicationState, IParticipant } from '../data/interfaces';
+import { setEventDetails } from '@/data/api';
+import { IEvent, TVP, IApplicationState, IParticipant } from '@/data/interfaces';
 
 @Component({
     computed: mapState({

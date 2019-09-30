@@ -4,7 +4,7 @@
             class="level-check-page-item"
             v-for="coll in collection"
             :key="coll.first"
-            v-scroll-to="{el: `#lc-${coll.first}`, container: '.level-checks'}">
+            v-scroll-to="{el: `#lc-${coll.first}`, container: '.level-check-list'}">
             <v-item v-slot:default="{ active, toggle }">
                 <v-card :color="active ? 'primary' : ''"
                     class="level-check-item-card"

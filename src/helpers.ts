@@ -20,9 +20,9 @@ export const getNextId = (registrations: IParticipant[]): string => {
     return (maxId + 1).toString();
 };
 
-export const sortlevels = (levels: IEventLevels): ILevel[] => {
+export const sortlevels = (levels: ILevel[]): ILevel[] => {
     // Sort levels based on
-    const levelsArray = Object.entries(levels).map(p => p[1]);
+    const levelsArray = Object.entries(levels).map((p) => p[1]);
     const sortedLevels = levelsArray.sort((a, b) => a.order - b.order);
 
     return sortedLevels;

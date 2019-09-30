@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
-import {IUser, IEvent, ILevel, TVP, IApplicationState } from './data/interfaces';
+import {IUser, IEvent, ILevel, TVP, IApplicationState, IChanges } from './data/interfaces';
 import uuid from 'uuid';
 
 Vue.use(Vuex);
@@ -77,6 +77,9 @@ export const store = new Vuex.Store<IApplicationState>({
     addChange(state, payload) {
       state.undoChangeState.push(payload);
     },
+    removeChange(state, payload: number) {
+      state.undoChangeState.splice(payload, 1);
+    },
   },
   actions: {
     add(context, payload) {
@@ -118,6 +121,9 @@ export const store = new Vuex.Store<IApplicationState>({
     addChange(context, payload) {
       context.commit('addChange', payload);
     },
+    removeChange(context, payload) {
+      context.commit('removeChange', payload);
+    }
   },
   getters: {
     user: (state: IApplicationState): IUser => {
@@ -128,6 +134,15 @@ export const store = new Vuex.Store<IApplicationState>({
     },
     event: (state: IApplicationState): IEvent => {
       return state.event;
+    },
+    levelCheckLevel: (state: IApplicationState): ILevel => {
+      return state.levelCheckLevel;
+    },
+    levelCheckRole: (state: IApplicationState): string => {
+      return state.levelCheckRole;
+    },
+    undoChangeState: (state: IApplicationState): IChanges[] => {
+      return state.undoChangeState;
     },
   },
 });

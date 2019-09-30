@@ -54,6 +54,7 @@ export interface IChanges {
   field: any;
   id: any;
   oldValue: any;
+  showChange?: boolean;
 }
 
 export interface IApplicationState {
@@ -63,10 +64,7 @@ export interface IApplicationState {
   event: IEvent;
   userEvents: TVP[];
   selectedEvent: IEvent;
-  levelCheckLevel: {
-    levelId: string,
-    level: ILevel,
-  };
+  levelCheckLevel: ILevel;
   levelCheckRole: string;
   undoChangeState: IChanges[];
 }

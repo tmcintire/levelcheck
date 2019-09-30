@@ -7,23 +7,10 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { mapState } from 'vuex';
-import { ILevel, IEventLevels, IApplicationState } from '../data/interfaces';
+import { ILevel, IEventLevels, IApplicationState, IParticipant } from '../../data/interfaces';
 
 @Component({
     computed: mapState({
-        levels: (state: IApplicationState) => {
-            return Object.entries(state.event.levels).filter((level: [string, ILevel]) => {
-                return level[1].levelCheck;
-            }).map((l: [string, ILevel]) => {
-                return ({
-                        text: l[1].name,
-                        value: {
-                            levelId: l[0],
-                            level: l[1]
-                        },
-                    });
-            });
-        },
         level: (state: IApplicationState) => state.levelCheckLevel,
     }),
 })

@@ -1,9 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Changes from './views/Changes.vue';
 import AddEditParticipants from '@/components/AddEditParticipants.vue';
 import AddEditLevels from '@/components/AddEditLevels.vue';
 import AddEditEvents from '@/components/AddEditEvent/AddEditEvents.vue';
+import LevelChecks from '@/components/LevelCheck/LevelChecks.vue';
 import { store } from './store';
 import { getCookie } from './data/cookies';
 
@@ -74,16 +76,17 @@ export const router = new Router({
     },
     {
       path: '/levelcheck',
-      name: 'levelcheck',
       component: () => import(/* webpackChunkName: "levelcheck" */ './views/LevelCheck.vue'),
       children: [
         {
-          path: 'participants',
-          component: AddEditParticipants,
+          alias: '',
+          path: 'checks',
+          name: 'levelcheck',
+          component: LevelChecks,
         },
         {
-          path: 'levels',
-          component: AddEditLevels,
+          path: 'changes',
+          component: Changes,
         },
       ],
       meta: {
