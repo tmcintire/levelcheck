@@ -20,7 +20,7 @@
                             :filteredParticipants="filteredParticipants"
                         />
                     </v-row>
-                     <v-row v-if="!levelCheckLevel && levelCheckRole" class="pt-12" justify="center" align="center">
+                     <v-row v-else-if="!levelCheckLevel && levelCheckRole" class="pt-12" justify="center" align="center">
                         <h3>Please select a level</h3>
                     </v-row>
                     <v-row v-else-if="levelCheckLevel && !levelCheckRole" class="pt-12" justify="center" align="center">
