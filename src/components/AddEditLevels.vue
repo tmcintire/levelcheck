@@ -8,7 +8,7 @@
             :class="selectedLevel === level ? 'active' : ''">
             {{level.name}} - {{level.levelCheck ? "Level Check" : "No Level Check"}}
         </div>
-        <b-button type="submit" variant="primary" @click="newLevel">New Level</b-button>
+        <v-btn color="primary" @click="newLevel">New Level</v-btn>
         <v-overlay opacity="0.90" :value="selectedLevel">
             <AddEditLevel :selectedLevel="selectedLevel" :selectedLevelId="selectedLevelId" :eventId="eventId" :levels="levels" v-on:close="onClose"/>
         </v-overlay>

@@ -1,22 +1,24 @@
 <template>
-    <v-col class="tabs-container">
-        <v-tabs v-if="levels" fixed-tabs class="no-flex" :value="selectedLevelIndex">
-            <v-tab 
-                v-for="(level, index) in levels" 
-                :key="index" 
-                @click="handleLevelSelection(level)">
-                {{level.name}}
-            </v-tab>
-        </v-tabs>
-        <v-tabs v-if="roles" fixed-tabs :value="selectedRoleIndex">
-            <v-tab 
-                v-for="(role, index) in roles" 
-                :key="index" 
-                @click="handleRoleSelection(role)">
-                {{role}}
-            </v-tab>
-        </v-tabs>
-    </v-col>
+    <v-row>
+        <v-col>
+            <v-tabs v-if="levels" fixed-tabs class="no-flex" :value="selectedLevelIndex">
+                <v-tab 
+                    v-for="(level, index) in levels" 
+                    :key="index" 
+                    @click="handleLevelSelection(level)">
+                    {{level.name}}
+                </v-tab>
+            </v-tabs>
+            <v-tabs v-if="roles" fixed-tabs :value="selectedRoleIndex">
+                <v-tab 
+                    v-for="(role, index) in roles" 
+                    :key="index" 
+                    @click="handleRoleSelection(role)">
+                    {{role}}
+                </v-tab>
+            </v-tabs>
+        </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">
@@ -29,8 +31,8 @@ import { sortlevels } from '../../helpers';
 export default class LevelCheckSelectors extends Vue {  
     @Prop() private levels: ILevel[];
     @Prop() private roles: string[];
-    private selectedLevelIndex: number = 0;
-    private selectedRoleIndex: number = 0;
+    private selectedLevelIndex: number = -1;
+    private selectedRoleIndex: number = -1;
 
     // Computed Props
     get level(): ILevel {

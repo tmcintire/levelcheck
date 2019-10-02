@@ -1,4 +1,4 @@
-<template v-if="selectedEvent">
+<template>
     <v-stepper v-model="newEvent">
     <v-stepper-header>
       <v-stepper-step :complete="newEvent > 1" step="1">Event Details</v-stepper-step>

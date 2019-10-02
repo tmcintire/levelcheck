@@ -1,10 +1,10 @@
 <template>
-  <v-col v-if="event">
+  <div v-if="event">
     <v-row justify="center">
-      <h1>LevelCheck</h1>
+      <h1>Level Check</h1>
     </v-row>
     <router-view />
-  </v-col>
+  </div>
 </template>
 
 <script lang="ts">

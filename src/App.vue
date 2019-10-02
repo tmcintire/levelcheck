@@ -55,8 +55,6 @@ export default class App extends Vue {
 <style lang="less">
 @import './styles/globals';
 @import './styles/modal';
-@import '~bootstrap/dist/css/bootstrap.css';
-@import '~bootstrap-vue/dist/bootstrap-vue.css';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

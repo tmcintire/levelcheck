@@ -1,23 +1,23 @@
 <template>
     <v-col class="level-check-list">
-        <v-card 
+        <v-card ripple
             class="mx-auto participant-card"
             :id="`lc-${participant.bib}`"
             v-for="participant in filteredParticipants"
             :key="participant.id"
         >
-            <div class="flex-row">
-                <div class="card-left" @click="$emit('setParticipant', participant)">
+            <v-row dense>
+                <div class="card-left pa-0" @click="$emit('setParticipant', participant)">
                     <v-card-text class="card-bib">{{participant.bib}}</v-card-text>
                 </div>
-                <div class="card-right flex-grow" @click="$emit('setParticipant', participant)">
-                    <v-card-text>Name: {{participant.name}}</v-card-text>
-                    <v-card-text>Level: {{participant.originalLevel}}</v-card-text>
-                </div>
+                <v-col align-self="center" class="pa-3" @click="$emit('setParticipant', participant)">
+                    <v-card-text class="pa-0">Name: {{participant.name}}</v-card-text>
+                    <v-card-text class="pa-0">Level: {{participant.originalLevel}}</v-card-text>
+                </v-col>
                 <div class="confirm-level flex-row flex-center" @click="$emit('confirmLevel', participant)">
                     <v-icon color="success" x-large>mdi-check-bold</v-icon>
                 </div>
-            </div>
+            </v-row>
         </v-card>
     </v-col>
 </template>
@@ -38,9 +38,14 @@ export default class LevelCheckList extends Vue {
         overflow-y: auto;
         height: 100%;
 
+
         .participant-card {
-            margin: 10px 0px;
             width: 100%;
+            margin: 10px 0px;
+
+            &:nth-child(even) {
+                background: #E3F2FD;
+            }
 
             .confirm-level {
                 width: 100px;
@@ -59,5 +64,4 @@ export default class LevelCheckList extends Vue {
             }
         }
     }
-    
 </style>

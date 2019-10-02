@@ -1,20 +1,22 @@
 <template>
-    <v-item-group class="level-check-pages">
+    <v-col class="level-check-pages">
         <div 
             class="level-check-page-item"
             v-for="coll in collection"
             :key="coll.first"
             v-scroll-to="{el: `#lc-${coll.first}`, container: '.level-check-list'}">
-            <v-item v-slot:default="{ active, toggle }">
-                <v-card :color="active ? 'primary' : ''"
-                    class="level-check-item-card"
-                    
-                    @click="toggle">
-                    {{coll.first}}-{{coll.last}}
-                </v-card>
-            </v-item>
+            <v-item-group>
+                <v-item v-slot:default="{ active, toggle }">
+                    <v-card :color="active ? 'primary' : ''"
+                        class="level-check-item-card"
+                        
+                        @click="toggle">
+                        {{coll.first}}-{{coll.last}}
+                    </v-card>
+                </v-item>
+            </v-item-group>
         </div>
-    </v-item-group>
+    </v-col>
 </template>
 
 <script lang="ts">
@@ -73,14 +75,12 @@ export default class NumbersBar extends Vue {
 
 <style lang="less" scoped>
     .level-check-pages {
-        margin: 10px 10px;
-        width: 90px;
+        max-width: 150px;
         height: 100%;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         .level-check-page-item {
-            padding: 5px;
-
+            margin: 10px 0px;
             .level-check-item-card {
                 padding: 10px;
             }

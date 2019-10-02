@@ -1,7 +1,7 @@
 <template>
   <div class="registrations">
     <h1>Level check user tutorial</h1>
-    <b-button @click="skipTutorial">Skip tutorial</b-button>
+    <v-btn @click="skipTutorial">Skip tutorial</v-btn>
   </div>
 </template>
 

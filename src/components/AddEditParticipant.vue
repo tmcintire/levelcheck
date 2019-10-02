@@ -1,24 +1,21 @@
 <template>
-    <div class="overlay">
-        <div class="modal-header flex-row flex-align-center">
-            <span class="header">
-              Add/Edit Registration
-            </span>
+    <v-container>
+        <v-row justify="space-between" align="center">
+            <h3 class="header">Add/Edit Registration</h3>
              <v-btn color="error" @click="$emit('close')">X</v-btn>
-        </div>
-        <b-form @submit="onSubmit" @reset="onReset">
-            <b-form-input class="form-input" v-model="name" placeholder="Name"></b-form-input>
-            <b-form-input type="number" class="form-input" v-model="bib" placeholder="Bib Number"></b-form-input>
-            <b-form-input class="form-input" v-model="role" placeholder="Role"></b-form-input>
-            <b-form-select class="form-input" v-model="originalLevel" :options="levelOptions"></b-form-select>
-            <b-form-select class="form-input" v-model="finalLevel" :options="levelOptions"></b-form-select>
+        </v-row>
+        <v-form @submit="onSubmit" @reset="onReset">
+            <v-text-field :label="'Name'" v-model="name"></v-text-field>
+            <v-text-field :label="'Bib Number'" v-model="bib"></v-text-field>
+            <v-text-field :label="'Role'" v-model="role"></v-text-field>
+            <v-select :label="'Level'" v-model="originalLevel" outlined :items="levelOptions"></v-select>
 
             <div class="flex-row flex-space-between">
                 <v-btn type="submit" color="primary">Submit</v-btn>
                 <v-btn type="reset" color="error">Reset</v-btn>
             </div>
-        </b-form>
-    </div>
+        </v-form>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -30,7 +27,6 @@ import { addEditParticipant } from '../data/api';
 @Component
 export default class AddEditLevel extends Vue {
     @Prop() public selectedParticipant: IParticipant;
-    @Prop() public eventId: string;
     @Prop() public levels: ILevel;
 
     public name: string = '';
@@ -58,13 +54,13 @@ export default class AddEditLevel extends Vue {
             name: this.name,
             bib: parseInt(this.bib, 10),
             originalLevel: this.originalLevel,
-            finalLevel: this.finalLevel,
+            finalLevel: this.originalLevel,
             role: this.role,
         };
 
         this.$emit('close');
 
-        addEditParticipant(this.eventId, participant, this.id as any);
+        addEditParticipant(participant, this.id as any);
     }
 
     @Watch('selectedParticipant', { immediate: true })

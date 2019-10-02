@@ -1,14 +1,14 @@
 <template>
     <div>
-        <div 
+        <v-row
             v-for="(ev, key) in userEvents"
             :key="key" 
             @click="selectEvent(ev, key)"
-            class="flex-row hover"
+            class="hover"
             :class="selectedEvent === ev ? 'active' : ''">
             {{ev.text}}
-        </div>
-        <b-button type="submit" variant="primary" @click="newEvent">New Event</b-button>
+        </v-row>
+        <v-btn color="primary" @click="newEvent">New Event</v-btn>
         <v-dialog v-if="selectedEvent" width="600px" max-width="700px" :value="selectedEvent">
             <AddEditEvent v-on:close="onClose" />
         </v-dialog>
