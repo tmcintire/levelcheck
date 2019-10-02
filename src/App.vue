@@ -44,9 +44,12 @@ export default class App extends Vue {
   private mounted() {
     firebase.auth().onAuthStateChanged((user: any) => {
       this.loggedIn = !!user;
-      getUserPermissions(user).then(() => {
-        getUserEvents(user.uid);
-      });
+      if (user) {
+          getUserPermissions(user).then(() => {
+            getUserEvents(user.uid);
+          });
+      }
+
     });
   }
 }
