@@ -1,13 +1,20 @@
 <template>
   <div v-if="event" class="registrations">
-    <h1>Participants for {{event.name}}</h1>
+    <h1>Participants for {{ event.name }}</h1>
     <div class="flex-row flex-space-around">
       <div class="flex-col" v-if="event">
         <h4>This is the current vuex store for "participants":</h4>
-        <div class="flex-row" v-for="(participant, key) in event.participants" :key="key">
+        <div
+          class="flex-row"
+          v-for="(participant, key) in event.participants"
+          :key="key"
+        >
           <span>
-            {{participant.name}} {{participant.bib}} - {{participant.originalLevel}} 
-            <span v-if="participant.finalLevel">- {{participant.finalLevel}}</span>
+            {{ participant.name }} {{ participant.bib }} -
+            {{ participant.originalLevel }}
+            <span v-if="participant.finalLevel"
+              >- {{ participant.finalLevel }}</span
+            >
           </span>
         </div>
       </div>
@@ -20,9 +27,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import EventSelector from '@/components/EventSelector.vue'; // @ is an alias to /src;
-import { mapState } from 'vuex';
+import { Component, Vue } from 'vue-property-decorator'
+import EventSelector from '@/components/EventSelector.vue' // @ is an alias to /src;
+import { mapState } from 'vuex'
 
 @Component({
   components: {

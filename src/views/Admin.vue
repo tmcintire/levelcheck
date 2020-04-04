@@ -15,16 +15,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { mapState } from 'vuex';
-import { navigatePath } from '@/router';
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import { mapState } from 'vuex'
+import { navigatePath } from '@/router'
 
 @Component({
   computed: mapState(['event']),
 })
 export default class Admin extends Vue {
   public navigate(path: string) {
-    navigatePath(path);
+    navigatePath(path)
   }
 }
 </script>

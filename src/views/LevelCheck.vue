@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import * as _ from 'lodash';
-import { mapState } from 'vuex';
-import { IApplicationState } from '@/data/interfaces';
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
+import * as _ from 'lodash'
+import { mapState } from 'vuex'
+import { IApplicationState } from '@/data/interfaces'
 
 @Component({
   computed: mapState({

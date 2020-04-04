@@ -1,27 +1,27 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Home from './views/Home.vue';
-import Changes from './views/Changes.vue';
-import AddEditParticipants from '@/components/AddEditParticipants.vue';
-import AddEditLevels from '@/components/AddEditLevels.vue';
-import AddEditEvents from '@/components/AddEditEvent/AddEditEvents.vue';
-import LevelChecks from '@/components/LevelCheck/LevelChecks.vue';
-import { store } from './store';
-import { getCookie } from './data/cookies';
+import Vue from 'vue'
+import Router from 'vue-router'
+import Home from './views/Home.vue'
+import Changes from './views/Changes.vue'
+import AddEditParticipants from '@/components/AddEditParticipants.vue'
+import AddEditLevels from '@/components/AddEditLevels.vue'
+import AddEditEvents from '@/components/AddEditEvent/AddEditEvents.vue'
+import LevelChecks from '@/components/LevelCheck/LevelChecks.vue'
+import { store } from './store'
+import { getCookie } from './data/cookies'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export const navigateName = (route: string) => {
   if (route !== router.currentRoute.name) {
-    router.push({name: route}).catch((err) => console.error(err));
+    router.push({ name: route }).catch((err) => console.error(err))
   }
-};
+}
 
 export const navigatePath = (path: string) => {
   if (path !== router.currentRoute.path) {
-    router.push({path}).catch((err) => console.error(err));
+    router.push({ path }).catch((err) => console.error(err))
   }
-};
+}
 
 export const router = new Router({
   mode: 'history',
@@ -38,7 +38,8 @@ export const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+      component: () =>
+        import(/* webpackChunkName: "login" */ './views/Login.vue'),
     },
     {
       path: '/registrations',
@@ -46,7 +47,10 @@ export const router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "registrations" */ './views/Registrations.vue'),
+      component: () =>
+        import(
+          /* webpackChunkName: "registrations" */ './views/Registrations.vue'
+        ),
       meta: {
         requiresAuth: true,
       },
@@ -54,7 +58,8 @@ export const router = new Router({
     {
       path: '/admin',
       name: 'admin',
-      component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
+      component: () =>
+        import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
       children: [
         {
           path: 'participants',
@@ -76,7 +81,8 @@ export const router = new Router({
     },
     {
       path: '/levelcheck',
-      component: () => import(/* webpackChunkName: "levelcheck" */ './views/LevelCheck.vue'),
+      component: () =>
+        import(/* webpackChunkName: "levelcheck" */ './views/LevelCheck.vue'),
       children: [
         {
           alias: '',
@@ -94,20 +100,23 @@ export const router = new Router({
         adminOnly: true,
       },
       beforeEnter: (to, from, next) => {
-        const needsLCTutorial = store.getters.user.levelCheckTutorial;
+        const needsLCTutorial = store.getters.user.levelCheckTutorial
         if (needsLCTutorial) {
           next({
             path: '/levelchecktutorial',
-          });
+          })
         } else {
-          next();
+          next()
         }
       },
     },
     {
       path: '/levelchecktutorial',
       name: 'levelchecktutorial',
-      component: () => import(/* webpackChunkName: "levelchecktutorial" */ './views/LevelCheckTutorial.vue'),
+      component: () =>
+        import(
+          /* webpackChunkName: "levelchecktutorial" */ './views/LevelCheckTutorial.vue'
+        ),
       children: [
         {
           path: 'participants',
@@ -120,34 +129,32 @@ export const router = new Router({
       ],
     },
   ],
-});
+})
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    const refreshToken = getCookie('refreshToken');
+    const refreshToken = getCookie('refreshToken')
     if (!refreshToken) {
       next({
         path: '/login',
         query: { redirect: to.fullPath },
-      });
+      })
     } else {
-
       // if we have authenticated, we need to also make sure we have an event selected
 
       if (!store.state.event && to.path !== '/') {
         next({
           path: '/',
-        });
+        })
       } else {
-        next();
+        next()
       }
-
     }
   } else {
-    next(); // make sure to always call next()!
+    next() // make sure to always call next()!
   }
-});
+})
 
-export default router;
+export default router

@@ -1,9 +1,16 @@
-import Vue from 'vue';
-import Vuex, { Store } from 'vuex';
-import {IUser, IEvent, ILevel, TVP, IApplicationState, IChanges } from './data/interfaces';
-import uuid from 'uuid';
+import Vue from 'vue'
+import Vuex, { Store } from 'vuex'
+import {
+  IUser,
+  IEvent,
+  ILevel,
+  TVP,
+  IApplicationState,
+  IChanges,
+} from './data/interfaces'
+import uuid from 'uuid'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export const store = new Vuex.Store<IApplicationState>({
   state: {
@@ -19,130 +26,142 @@ export const store = new Vuex.Store<IApplicationState>({
   },
   mutations: {
     add(state, payload) {
-      state.registrations = state.registrations.concat(payload);
+      state.registrations = state.registrations.concat(payload)
     },
     create(state, payload) {
-      state.registrations = payload;
+      state.registrations = payload
     },
     createLevels(state, payload) {
-      state.levels = payload;
+      state.levels = payload
     },
     setUser(state, payload) {
-      state.user = payload;
+      state.user = payload
     },
     logout(state) {
-      state.user = null;
+      state.user = null
     },
     setEvent(state, payload) {
-      state.event = payload;
+      state.event = payload
     },
     setUserEvents(state, payload: TVP[]) {
       // need a blank value
-      state.userEvents = payload;
+      state.userEvents = payload
     },
-    updateSelectedEvent(state, payload: {property: any, value: any, type?: string, field?: any, key?: any}) {
+    updateSelectedEvent(
+      state,
+      payload: {
+        property: any
+        value: any
+        type?: string
+        field?: any
+        key?: any
+      }
+    ) {
       if (payload.type === 'number') {
-        payload.value = parseInt(payload.value, 10);
+        payload.value = parseInt(payload.value, 10)
       }
 
       if (payload.key && payload.field) {
         // This is a nested collection with key value pairs
-        state.selectedEvent[payload.property][payload.key][payload.field] = payload.value;
+        state.selectedEvent[payload.property][payload.key][payload.field] =
+          payload.value
       } else if (payload.field && !payload.key) {
         // This is just a field, inside of a field, lets update it
-        state.selectedEvent[payload.property][payload.field] = payload.value;
+        state.selectedEvent[payload.property][payload.field] = payload.value
       } else {
         // A single nested field on the event
-        state.selectedEvent[payload.property] = payload.value;
+        state.selectedEvent[payload.property] = payload.value
       }
     },
     setSelectedEvent(state, payload: IEvent) {
-      state.selectedEvent = payload;
+      state.selectedEvent = payload
     },
     addNewLevel(state) {
-      const levelId = uuid();
-      state.selectedEvent.levels = { ...state.selectedEvent.levels,
+      const levelId = uuid()
+      state.selectedEvent.levels = {
+        ...state.selectedEvent.levels,
         [levelId]: {
           name: '',
           levelCheck: false,
           order: Object.keys(state.selectedEvent.levels).length,
-      }};
+        },
+      }
     },
     setLevelCheckLevel(state, payload) {
-      state.levelCheckLevel = payload;
+      state.levelCheckLevel = payload
     },
     setLevelCheckRole(state, payload) {
-      state.levelCheckRole = payload;
+      state.levelCheckRole = payload
     },
     addChange(state, payload) {
-      state.undoChangeState.push(payload);
+      state.undoChangeState.push(payload)
     },
     removeChange(state, payload: number) {
-      state.undoChangeState.splice(payload, 1);
+      state.undoChangeState.splice(payload, 1)
     },
   },
   actions: {
     add(context, payload) {
-      context.commit('add', payload);
+      context.commit('add', payload)
     },
     create(context, payload) {
-      context.commit('create', payload);
+      context.commit('create', payload)
     },
     createLevels(context, payload) {
-      context.commit('createLevels', payload);
+      context.commit('createLevels', payload)
     },
     setUser(context, payload) {
-      context.commit('setUser', payload);
+      context.commit('setUser', payload)
     },
     logout(context) {
-      context.commit('logout');
+      context.commit('logout')
     },
     setEvent(context, payload) {
-      context.commit('setEvent', payload);
+      context.commit('setEvent', payload)
     },
     setUserEvents(context, payload: TVP[]) {
-      context.commit('setUserEvents', payload);
+      context.commit('setUserEvents', payload)
     },
     updateSelectedEvent(context, payload) {
-      context.commit('updateSelectedEvent', payload);
+      context.commit('updateSelectedEvent', payload)
     },
     setSelectedEvent(context, payload: IEvent) {
-      context.commit('setSelectedEvent', payload);
+      context.commit('setSelectedEvent', payload)
     },
     addNewLevel(context, payload: ILevel) {
-      context.commit('addNewLevel');
+      context.commit('addNewLevel')
     },
     setLevelCheckLevel(context, payload) {
-      context.commit('setLevelCheckLevel', payload);
+      context.commit('setLevelCheckLevel', payload)
     },
     setLevelCheckRole(context, payload) {
-      context.commit('setLevelCheckRole', payload);
+      context.commit('setLevelCheckRole', payload)
     },
     addChange(context, payload) {
-      context.commit('addChange', payload);
+      context.commit('addChange', payload)
     },
     removeChange(context, payload) {
-      context.commit('removeChange', payload);
-    }
+      context.commit('removeChange', payload)
+    },
   },
   getters: {
     user: (state: IApplicationState): IUser => {
-      return state.user;
+      return state.user
     },
     selectedEvent: (state: IApplicationState): IEvent => {
-      return state.selectedEvent;
+      return state.selectedEvent
     },
     event: (state: IApplicationState): IEvent => {
-      return state.event;
+      return state.event
     },
     levelCheckLevel: (state: IApplicationState): ILevel => {
-      return state.levelCheckLevel;
+      return state.levelCheckLevel
     },
     levelCheckRole: (state: IApplicationState): string => {
-      return state.levelCheckRole;
+      return state.levelCheckRole
     },
     undoChangeState: (state: IApplicationState): IChanges[] => {
-      return state.undoChangeState;
+      return state.undoChangeState
     },
   },
-});
+})

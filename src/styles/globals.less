@@ -1,79 +1,83 @@
 .flex-row {
-    display: flex;
+  display: flex;
 }
 
 .flex-col {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-justify-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .flex-align-center {
-    align-items: center;
+  align-items: center;
 }
 
 .flex-center {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex-space-between {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .flex-space-around {
-    justify-content: space-around;
+  justify-content: space-around;
 }
 
 .flex-grow {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .form-input {
-    margin: 10px 0px;
+  margin: 10px 0px;
 }
 
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
 
-  .active {
-      background: lightblue;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-
-  .overlay {
-      padding: 20px;
-      color: black!important;
-
-      .header {
-          color: white;
-      }
+  100% {
+    transform: rotate(360deg);
   }
+}
+
+.active {
+  background: lightblue;
+}
+
+.overlay {
+  padding: 20px;
+  color: black !important;
+
+  .header {
+    color: white;
+  }
+}
 
 .hover {
-    &:hover {
-        cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .no-margin {
-    margin: 0!important;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  margin: 0 !important;
 }
 
 .dialog-modal {
-    background-color: white;
-    padding: 30px;
+  background-color: white;
+  padding: 30px;
 }
