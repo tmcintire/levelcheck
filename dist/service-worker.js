@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.4b3868d0ffaa5f7c995c921773a22763.js"
+  "/precache-manifest.3e644d3430193a7d3fa92dd1c3fcfe51.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "levelcheck"});
